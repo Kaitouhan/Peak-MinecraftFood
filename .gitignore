@@ -1,0 +1,12 @@
+[BepInEx]
+LogOutput.log
+*.user
+*.suo
+.vs/
+bin/
+obj/
+.build/
+.package-staging/
+thunderstore/
+icon-source.png
+*.zip

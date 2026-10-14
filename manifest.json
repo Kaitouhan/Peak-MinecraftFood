@@ -1,0 +1,15 @@
+{
+  "namespace": "Kaitouhan",
+  "name": "MinecraftFoods",
+  "description": "Adds 34 Minecraft-style foods to PEAK: cooking, loot, nutrition and food-specific effects.",
+  "version_number": "1.0.0",
+  "dependencies": [
+    "BepInEx-BepInExPack_PEAK-5.4.2403",
+    "PEAKModding-PEAKLib_Core-1.7.2",
+    "PEAKModding-PEAKLib_Items-1.6.2",
+    "MonoDetour-MonoDetour_BepInEx_5-0.6.7"
+  ],
+  "website_url": "https://github.com/Kaitouhan/Peak-MinecraftFood",
+  "FullName": "Kaitouhan-MinecraftFoods"
+}
+
