@@ -21,7 +21,6 @@ namespace MinecraftFoods
             lastUse=Time.time;
             var state=c.GetComponent<FoodPlayerState>()??c.gameObject.AddComponent<FoodPlayerState>();
             state.Eat(m.Definition,m.Stage);
-            Plugin.PlayEat(c);
             if(item.totalUses>1) item.GetComponent<Action_ReduceUses>().RunAction();
             else item.StartCoroutine(item.ConsumeDelayed(true));
         }
@@ -29,7 +28,7 @@ namespace MinecraftFoods
 
     public sealed class FoodPlayerState : MonoBehaviour
     {
-        internal float Saturation, Shield;
+        internal float Shield;
         private float shieldUntil, resistUntil, fireUntil, afterAt, afterAmount, nextTeleport;
         private Character character;
         private readonly Dictionary<string,TimedStatus> timers=new Dictionary<string,TimedStatus>();
@@ -41,8 +40,8 @@ namespace MinecraftFoods
         internal void Eat(FoodDefinition f,int stage)
         {
             var a=character.refs.afflictions;
-            a.SubtractStatus(S.Hunger,f.HungerAt(stage)/20f);
-            Saturation=Mathf.Clamp(Saturation+f.SaturationAt(stage)/20f,0,Mathf.Clamp01(1-a.GetCurrentStatus(S.Hunger)));
+            a.SubtractStatus(S.Hunger,f.HungerAt(stage)/100f);
+            character.AddExtraStamina(f.BonusAt(stage)/100f);
             bool wholesome=stage<f.scorch;
             switch(f.id)
             {
@@ -61,7 +60,11 @@ namespace MinecraftFoods
                 case "poisonous_potato":
                     if(UnityEngine.Random.value<.6f){Apply(S.Poison,.05f+.025f*stage);Timed("potato-poison",S.Poison,5,.05f+.025f*stage);}break;
                 case "chicken":
-                    if(stage==0 && UnityEngine.Random.value<.3f)Timed("chicken-hunger",S.Hunger,30,.15f);break;
+                    if(stage==0 && UnityEngine.Random.value<.3f)Apply(S.Poison,.12f);break;
+                case "beef": case "porkchop": case "mutton": case "rabbit":
+                    if(stage==0 && UnityEngine.Random.value<.15f)Apply(S.Poison,.08f);break;
+                case "cod": case "salmon": case "tropical_fish":
+                    if(stage==0 && UnityEngine.Random.value<.2f)Apply(S.Poison,.10f);break;
                 case "honey_bottle": if(wholesome)ClearPoison();break;
                 case "milk_bucket": if(wholesome)Milk();break;
                 case "golden_apple": if(wholesome)Golden(false);break;
@@ -70,7 +73,7 @@ namespace MinecraftFoods
                 case "suspicious_stew": if(wholesome)Stew();break;
             }
             if(f.BurnPoisonAt(stage)>0)Apply(S.Poison,f.BurnPoisonAt(stage));
-            Plugin.Log.LogInfo($"EAT {f.id} stage={stage} nutrition={f.HungerAt(stage):F2}/{f.SaturationAt(stage):F2} receiver={character.photonView.ViewID} airport={InAirport(a)}");
+            Plugin.Log.LogInfo($"EAT {f.id} stage={stage} nutrition={f.HungerAt(stage):F2}/{f.BonusAt(stage):F2} receiver={character.photonView.ViewID} airport={InAirport(a)}");
         }
         private void Timed(string key,S status,float seconds,float total,bool heal=false)
         {
@@ -92,15 +95,15 @@ namespace MinecraftFoods
         }
         private void Golden(bool enchanted)
         {
-            float invincible=enchanted?10:3;
+            float invincible=enchanted?12:5;
             var a=character.refs.afflictions;
             if(!a.HasAfflictionType(Affliction.AfflictionType.Invincibility,out var previous) || previous.totalTime-previous.timeElapsed<invincible)
                 a.AddAffliction(new Affliction_Invincibility{totalTime=invincible});
             else invincible=previous.totalTime-previous.timeElapsed;
-            Shield=Mathf.Max(Shield,enchanted?.8f:.2f); shieldUntil=Time.time+120;
+            Shield=Mathf.Max(Shield,enchanted?.8f:.2f); shieldUntil=Time.time+60;
             Timed("regeneration",S.Injury,enchanted?20:5,enchanted?.8f:.2f,true);
-            if(enchanted){resistUntil=Time.time+300;fireUntil=Time.time+300;}
-            if(Plugin.AppleAftereffects.Value){afterAmount=Mathf.Max(afterAt>Time.time?afterAmount:0,enchanted?.05f:.025f);afterAt=Mathf.Max(afterAt,Time.time+invincible);}
+            if(enchanted){resistUntil=Time.time+60;fireUntil=Time.time+60;}
+            if(Plugin.AppleAftereffects.Value){afterAmount=Mathf.Max(afterAt>Time.time?afterAmount:0,enchanted?6f:3f);afterAt=Mathf.Max(afterAt,Time.time+invincible);}
         }
         internal void RemoveFoodPoisonTimers()
         {
@@ -127,7 +130,7 @@ namespace MinecraftFoods
             switch(UnityEngine.Random.Range(0,8))
             {
                 case 0:Timed("regeneration",S.Injury,8,.15f,true);break;
-                case 1:Saturation=Mathf.Min(Saturation+.35f,Mathf.Clamp01(1-character.refs.afflictions.GetCurrentStatus(S.Hunger)));break;
+                case 1:character.AddExtraStamina(.20f);break;
                 case 2:character.refs.afflictions.AddAffliction(new Affliction_LowGravity(1,6));break;
                 case 3:fireUntil=Mathf.Max(fireUntil,Time.time+4);break;
                 case 4:character.refs.afflictions.AddAffliction(new Affliction_Blind{totalTime=8});break;
@@ -165,11 +168,7 @@ namespace MinecraftFoods
         internal void FilterStatus(S status,ref float amount)
         {
             if(amount<=0)return;
-            if(status==S.Hunger)
-            {
-                float used=Mathf.Min(Saturation,amount); Saturation-=used;amount-=used;
-            }
-            else if(status==S.Hot && Time.time<fireUntil) amount=0;
+            if(status==S.Hot && Time.time<fireUntil) amount=0;
             else if(status==S.Injury)
             {
                 if(Time.time<resistUntil)amount*=.8f;
@@ -179,9 +178,9 @@ namespace MinecraftFoods
         void Update()
         {
             if(!character || !character.IsLocal)return;
-            if(character.data.dead){timers.Clear();Saturation=Shield=0;afterAt=resistUntil=fireUntil=shieldUntil=0;return;}
+            if(character.data.dead){timers.Clear();Shield=0;afterAt=resistUntil=fireUntil=shieldUntil=0;return;}
             if(Time.time>=shieldUntil)Shield=0;
-            if(afterAt>0 && Time.time>=afterAt){afterAt=0;Apply(S.Drowsy,afterAmount);}
+            if(afterAt>0 && Time.time>=afterAt){if(!character.refs.afflictions.HasAfflictionType(Affliction.AfflictionType.Invincibility,out var invincibility)){afterAt=0;character.photonView.RPC("RPCA_Fall",RpcTarget.All,afterAmount,0f);}}
             tick+=Time.deltaTime;if(tick<.25f)return;
             float dt=tick;tick=0;
             foreach(var key in timers.Keys.ToArray())
@@ -191,7 +190,6 @@ namespace MinecraftFoods
                 else Apply(effect.status,effect.rate*step);
                 effect.remaining-=step;if(effect.remaining<=0)timers.Remove(key);
             }
-            Saturation=Mathf.Min(Saturation,Mathf.Clamp01(1-character.refs.afflictions.GetCurrentStatus(S.Hunger)));
         }
     }
 }

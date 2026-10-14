@@ -1,21 +1,139 @@
-# Thunderstore 页面文案
+![Minecraft Foods for PEAK](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/docs/media/banner-1.25.png)
 
-## 标题
+# Minecraft Foods
 
-Minecraft Foods
+**把熟悉的 Minecraft 食物装进背包，和朋友一起攀登 PEAK。**
 
-## 简介
+从普通箱子里找到苹果、面包和肉类，在营火旁烤一份牛排，或把金苹果留到危险的攀登路段。Minecraft Foods 为 PEAK 加入 **34 种食物**，带来像素风外观、Minecraft 进食音效、独立烹饪规则和各有用途的特殊效果。
 
-把 34 种 Minecraft 食物加入 PEAK：普通箱子掉落、原地生熟转换、逐食物烹饪阈值、营养值与专属正负面效果。
+食物直接使用 PEAK 的饥饿回复与额外体力数值。同类食品的基础回复经过加强，物品说明会告诉你吃下去能获得什么，以及下一次烹饪会发生什么。
 
-## 详情
+*顶部为宣传插画；下方为随模组提供的物品图标。*
 
-- 生肉和生鱼烤一次会在原物品栏槽位变成熟食，后续烹饪会按各自规则烧焦、变色、变毒或烧毁。
-- 河豚、腐肉、蜘蛛眼等保持各自负面效果；紫颂果、金苹果和附魔金苹果有独立特殊效果。
-- 按稀有度混入普通箱子，默认占每个掉落位置 25% 的总份额，可在配置中调整。
-- 使用 TrailMix 小体积握持模板；可在配置中切换为 SmallEgg。
-- 含 Minecraft 风格图标和进食音效。房主和加入者请安装同版本。
+---
 
-完整安装说明、食物数值、配置及源码见 GitHub：
-https://github.com/Kaitouhan/Peak-MinecraftFood
+## 在攀登途中找到它们
 
+- **普通箱子就能开出**：Minecraft 食物加入普通行李箱掉落池，无需寻找专属箱子。
+- **稀有度决定机会**：日常食材更常见，金苹果和附魔金苹果更难获得。
+- **与朋友分享**：可以拾取、携带、丢给队友，也可以使用喂食交互。
+- 默认每个普通箱子掉落位置有约 **25%** 的权重分给 Minecraft 食物，房主可调整。
+
+## 熟悉的食物，适合 PEAK 的补给
+
+| 日常补给 | 营火料理 | 稀有食物 |
+| --- | --- | --- |
+| ![苹果](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/apple_icon.png) | ![牛排](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/cooked_beef_icon.png) | ![金苹果](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/golden_apple_icon.png) |
+| 苹果、面包、饼干、胡萝卜和浆果 | 肉类、鱼类、烤马铃薯和各类汤食 | 金苹果、紫颂果和迷之炖菜 |
+
+轻便零食适合途中补充，汤类和大餐适合消耗较大时使用。所有数值直接以 PEAK 的“移除饥饿”和“获得额外体力”显示。
+
+| 食物例子 | 移除饥饿 | 额外体力 |
+| --- | ---: | ---: |
+| 饼干 | 12 点 | 12 点 |
+| 苹果 | 18 点 | 12 点 |
+| 面包 | 18 点 | 23 点 |
+| 牛排（生牛肉烹饪一次） | 36 点 | 33 点 |
+| 蘑菇煲 | 45 点 | 45 点 |
+| 兔肉煲 | 48 点 | 46 点 |
+
+数值为未烧焦时的单次食用效果；状态和额外体力仍受游戏自身上限限制。
+
+## 把生肉烤熟，别把晚餐烧毁
+
+- **原槽位变熟**：生肉和生鱼首次烹饪后更换名称与贴图，物品栏图标同步更新，不会为了转换熟食而掉到地上。
+- **首次加热提高回复**：其他食物也能从第一次加热中受益，重复加热不会无限叠加收益。
+- **每种食物耐热程度不同**：继续加热会逐渐变色，超过各自阈值后烧焦、降低回复并增加中毒，最终烧毁。
+- **提前看结果**：拿起食物即可查看当前效果、已烹饪次数和下一次烹饪后的变化。
+
+## 特殊食物，有收益也有代价
+
+| 金苹果 | 紫颂果 | 河豚 |
+| --- | --- | --- |
+| ![金苹果](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/golden_apple_icon.png) | ![紫颂果](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/chorus_fruit_icon.png) | ![河豚](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/pufferfish_icon.png) |
+| 在危险路段争取喘息时间 | 随机寻找附近安全落脚点 | 食用会中毒，加热也不会让它安全 |
+
+- **金苹果**：获得 5 秒无敌、持续恢复受伤和吸收盾；无敌结束后倒地失控 3 秒。
+- **附魔金苹果**：获得 12 秒无敌、更强恢复和吸收盾，附带短时减伤与炎热防护；无敌结束后倒地失控 6 秒。
+- **紫颂果**：尝试传送到附近安全落脚点，没有合适位置时留在原地。
+- **蜂蜜**：清除中毒与相关持续中毒效果；**牛奶**清除临时效果、中毒和嗜睡，也会移除正面效果。
+- **迷之炖菜**：随机获得一种正面或负面效果。
+- **河豚、腐肉、蜘蛛眼和毒马铃薯**：保留各自风险；烹饪会继续增加毒性。生肉和生鱼也可能带来生食风险。
+
+## 听得到，也看得懂
+
+食用时播放随包提供的 Minecraft 进食音效，取消或完成时停止。声音通过 SoundAPI 处理，只匹配本模组的进食声音。
+
+物品说明按 PEAK 的表达方式显示回复量、中毒、概率、持续时间、重量和烹饪预览。可搭配 **物品信息显示增强版** 使用；没有它，本模组也能显示说明。
+
+---
+
+## 安装
+
+推荐使用 **r2modman** 或 **Thunderstore Mod Manager** 安装，清单中的前置依赖由管理器处理。
+
+手动安装：
+
+1. 安装下方列出的必要前置。
+2. 解压安装包，把其中 `plugins/MinecraftFoods` 整个文件夹复制到 `PEAK/BepInEx/plugins/`。食物与进食音效都在同一个文件夹内。
+3. 启动 PEAK，首次运行会生成 `BepInEx/config/codex.peak.minecraftfoods.cfg`。
+
+## 前置与兼容性
+
+必要前置：
+
+- [BepInExPack_PEAK 5.4.2403](https://thunderstore.io/c/peak/p/BepInEx/BepInExPack_PEAK/)
+- [PEAKLib Core 1.7.2](https://thunderstore.io/c/peak/p/PEAKModding/PEAKLib_Core/)
+- [PEAKLib Items 1.6.2](https://thunderstore.io/c/peak/p/PEAKModding/PEAKLib_Items/)
+- [MonoDetour_BepInEx_5 0.6.7](https://thunderstore.io/c/peak/p/MonoDetour/MonoDetour_BepInEx_5/)
+- [loaforcsSoundAPI 2.0.13](https://thunderstore.io/c/peak/p/loaforc/loaforcsSoundAPI/)
+
+可选：**物品信息显示增强版（ItemInfoDisplayForkedCNPlus 1.1.3）**，已按该版本显示接口适配，不是启动前置。
+
+- 房主与加入者应安装相同版本及依赖。
+- 模组独立运行，不依赖作者其他自定义物品模组。
+- 更新时覆盖旧版同名文件夹，不要同时保留多份 Minecraft Foods 插件 DLL。
+- 本模组食品的内置说明目前为简体中文。
+
+## 常见问题
+
+**需要 Minecraft 专属箱子吗？**
+
+不需要，普通行李箱即可生成。掉落是随机的，并非每个箱子都有。
+
+**可以修改掉落概率吗？**
+
+可以，在配置文件中调整 `Loot.MinecraftShare`，默认 `0.25`。修改后重启，由房主配置决定。
+
+**河豚能烤熟解毒吗？**
+
+不能。有毒食物保留风险，过度烹饪会更危险。
+
+**为什么吃金苹果后会倒地？**
+
+这是无敌结束后的代价。可以通过 `Effects.GoldenAppleAftereffects` 配置关闭。
+
+**怎样反馈问题？**
+
+到 [GitHub Issues](https://github.com/Kaitouhan/Peak-MinecraftFood/issues) 提交问题，附上游戏版本、模组版本、复现步骤和相关 `BepInEx/LogOutput.log` 日志。
+
+## 1.25.0 更新
+
+- 对照同类原版食物加强基础回复，首次加热也有收益。
+- 改用 PEAK 单位展示食物效果和下一次烹饪结果。
+- 调整进食音效播放时机，并适配 SoundAPI 2.0.13。
+- 金苹果无敌结束后分别倒地失控 3 秒／6 秒。
+
+本版已完成编译、数值和打包检查；新版的实际听感、显示排版及多人表现仍需游戏内验证。
+
+## 致谢
+
+- PEAK：Aggro Crab 与 Landfall。
+- Minecraft 及相关原版资源：Mojang Studios / Microsoft。
+- 声音支持：loaforc — loaforcsSoundAPI；物品注册支持：PEAKLib。
+- 本项目是非官方社区模组，与上述游戏开发商无隶属关系。源码许可不改变第三方素材的权利归属。
+
+## 链接
+
+- [GitHub 源码](https://github.com/Kaitouhan/Peak-MinecraftFood)
+- [问题反馈与建议](https://github.com/Kaitouhan/Peak-MinecraftFood/issues)

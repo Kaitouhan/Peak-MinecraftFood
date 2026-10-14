@@ -11,15 +11,15 @@ using HarmonyLib;
 using PEAKLib.Core;
 using PEAKLib.Items;
 using UnityEngine;
-using UnityEngine.Networking;
 using Zorro.Core;
 using Object = UnityEngine.Object;
 
 namespace MinecraftFoods
 {
-    [BepInPlugin(Id, "Minecraft Foods", "1.0.0")]
+    [BepInPlugin(Id, "Minecraft Foods", "1.25.0")]
     [BepInDependency("com.github.PEAKModding.PEAKLib.Items", "1.6.2")]
     [BepInDependency("com.github.PEAKModding.PEAKLib.Core")]
+    [BepInDependency("me.loaforc.soundapi", "2.0.13")]
     public sealed class Plugin : BaseUnityPlugin
     {
         public const string Id = "codex.peak.minecraftfoods";
@@ -31,8 +31,7 @@ namespace MinecraftFoods
         internal static ConfigEntry<float> LootShare;
         internal static ConfigEntry<bool> AirportEffects, AppleAftereffects;
         internal static ConfigEntry<string> GripTemplate;
-        internal static ConfigEntry<bool> ShowInfo, EatAudio;
-        internal static readonly List<AudioClip> Sounds = new List<AudioClip>();
+        internal static ConfigEntry<bool> ShowInfo;
         private Harmony harmony;
         private bool ready, failed, externalInfo;
         private GameObject templates;
@@ -43,10 +42,9 @@ namespace MinecraftFoods
             Root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             LootShare = Config.Bind("Loot", "MinecraftShare", .25f, new ConfigDescription("Minecraft food share per ordinary luggage slot. Host setting; restart for changes.", new AcceptableValueRange<float>(0f,.8f)));
             AirportEffects = Config.Bind("Effects", "AllowFoodEffectsInAirport", true, "Allow only this mod's food effects in the airport, for testing. Does not unlock environmental damage.");
-            AppleAftereffects = Config.Bind("Effects", "GoldenAppleAftereffects", true, "PEAK adaptation: 2.5/5 drowsiness after golden/enchanted apple invulnerability ends.");
+            AppleAftereffects = Config.Bind("Effects", "GoldenAppleAftereffects", true, "Golden/enchanted apple: 3/6 seconds of complete knockdown after invulnerability ends.");
             GripTemplate = Config.Bind("Visuals", "GripTemplate", "TrailMix", "TrailMix (recommended) or SmallEgg. Restart after changing.");
             ShowInfo = Config.Bind("UI", "ShowFoodInformation", true, "Show names, nutrition, effects and cooking thresholds; independent of other personal mods.");
-            EatAudio = Config.Bind("Audio", "MinecraftEatingSounds", true, "Play bundled Minecraft eating sounds locally on successful consumption.");
             try
             {
                 var catalogue = Newtonsoft.Json.JsonConvert.DeserializeObject<Catalogue>(File.ReadAllText(Path.Combine(Root,"catalogue.json")));
@@ -60,7 +58,6 @@ namespace MinecraftFoods
                     if (f.HasCooked) Visuals.TextureFor(f.cookedTexture);
                 }
                 harmony = new Harmony(Id); harmony.PatchAll();
-                StartCoroutine(LoadAudio());
             }
             catch (Exception e) { failed = true; Log.LogError("Minecraft Foods initialization failed: " + e); if(Environment.GetCommandLineArgs().Contains("--mcfoods-audit"))Application.Quit(2); }
         }
@@ -103,6 +100,7 @@ namespace MinecraftFoods
                 item.usingTimePrimary = f.id == "honey_bottle" ? 2f : 1.6f;
                 var feedback=go.GetComponent<ItemUseFeedback>();
                 if(feedback)feedback.sfxUsed=null;
+                go.AddComponent<FoodAudio>();
                 item.itemTags = Item.ItemTags.PackagedFood;
                 item.UIData = new Item.ItemUIData { itemName=f.name, icon=Visuals.IconFor(f.texture), mainInteractPrompt=f.id == "milk_bucket" || f.id == "honey_bottle" ? "饮用" : "吃", secondaryInteractPrompt="喂食", hasSecondInteract=true, hideSecondInteract=false, hideFuel=f.uses==1 };
                 // Unity serializes the marker and native hand transforms into every instance.
@@ -128,7 +126,7 @@ namespace MinecraftFoods
             LootData.PopulateLootData();
             InstallInfoIntegration();
             Log.LogInfo($"REGISTERED {Registered.Count} independent Minecraft foods; template={template.name}; no PeakCustomItemMod dependency.");
-            var diagnostic = new List<string> { "Minecraft Foods 2.0.0", "Grip template: " + template.name, "Config: " + Config.ConfigFilePath };
+            var diagnostic = new List<string> { "Minecraft Foods 1.25.0", "Grip template: " + template.name, "Config: " + Config.ConfigFilePath };
             foreach (var item in Registered)
             {
                 var m=item.GetComponent<FoodMarker>();
@@ -142,51 +140,28 @@ namespace MinecraftFoods
             File.WriteAllLines(Path.Combine(Paths.BepInExRootPath,"MinecraftFoods-diagnostics.txt"),diagnostic);
         }
         static Rarity RarityFor(string rarity) => rarity == "epic" ? Rarity.Mythic : rarity == "rare" ? Rarity.Rare : rarity == "uncommon" ? Rarity.Uncommon : Rarity.Common;
-        IEnumerator LoadAudio()
-        {
-            foreach (var path in Directory.GetFiles(Path.Combine(Root,"sounds"),"*.ogg"))
-            {
-                using (var req = UnityWebRequestMultimedia.GetAudioClip(new Uri(path).AbsoluteUri,AudioType.OGGVORBIS))
-                {
-                    yield return req.SendWebRequest();
-                    if (req.result == UnityWebRequest.Result.Success) Sounds.Add(DownloadHandlerAudioClip.GetContent(req));
-                    else Log.LogWarning("Eating audio unavailable: " + req.error);
-                }
-            }
-        }
-        internal static void PlayEat(Character c)
-        {
-            if (!EatAudio.Value || Sounds.Count == 0 || !c.IsLocal) return;
-            var obj = new GameObject("MinecraftEatAudio");
-            var audio=obj.AddComponent<AudioSource>(); audio.spatialBlend=0; audio.volume=.65f;
-            audio.clip=Sounds[UnityEngine.Random.Range(0,Sounds.Count)]; audio.Play(); Destroy(obj,2);
-        }
         void InstallInfoIntegration()
         {
             var type=AccessTools.TypeByName("ItemInfoDisplay.Plugin");
             var method=type==null?null:AccessTools.Method(type,"ProcessItemGameObject",new[]{typeof(Item)});
             if(method==null) return;
-            harmony.Patch(method,postfix:new HarmonyMethod(typeof(Plugin),nameof(AfterExternalInfo)));
+            harmony.Patch(method,prefix:new HarmonyMethod(typeof(Plugin),nameof(AfterExternalInfo)));
             externalInfo=true;
         }
-        static void AfterExternalInfo(Item __0)
+        static bool AfterExternalInfo(Item __0)
         {
             var marker=__0?__0.GetComponent<FoodMarker>():null;
-            if(!marker || !ShowInfo.Value) return;
+            if(!marker || !ShowInfo.Value) return true;
             var field=AccessTools.Field(AccessTools.TypeByName("ItemInfoDisplay.Plugin"),"itemInfoDisplayTextMesh");
-            var text=field?.GetValue(null); if(text==null)return;
+            var text=field?.GetValue(null); if(text==null)return true;
             AccessTools.Property(text.GetType(),"text")?.SetValue(text,Describe(marker));
+            return false;
         }
         internal static string Describe(FoodMarker m)
         {
-            var f=m.Definition; int s=m.Stage;
-            string text=$"<b>{f.NameAt(s)}</b>\n{f.description}\n饱食 {f.HungerAt(s):0.#}/20（移除 {f.HungerAt(s)*5:0.#} 点饥饿）｜饱和 {f.SaturationAt(s):0.#}/20\n{f.effectDescription}\n烹饪 {s}/12；{f.scorch} 次起烧焦；{f.wreck} 次烧毁";
-            if(f.BurnPoisonAt(s)>0)text+=$"\n烧焦附加中毒 {f.BurnPoisonAt(s)*100:0.#} 点";
-            if(s>=f.wreck) text+="\n已烧毁，无法食用或获得效果。";
-            var c=Character.localCharacter; var state=c?c.GetComponent<FoodPlayerState>():null;
-            if(state)text+=$"\n当前饱和储备 {state.Saturation*20:0.#}/20；吸收盾 {state.Shield*100:0.#}";
-            return text;
+            return FoodInformation.Describe(m);
         }
+
         void OnGUI()
         {
             if(!ready || !ShowInfo.Value || externalInfo)return;
@@ -194,8 +169,10 @@ namespace MinecraftFoods
             if(!m)return;
             if(infoStyle==null) infoStyle=new GUIStyle(GUI.skin.label) { richText=true, wordWrap=true, font=Font.CreateDynamicFontFromOSFont("Microsoft YaHei",18), normal={textColor=new Color(1,.96f,.8f)} };
             infoStyle.fontSize=Mathf.Clamp(Mathf.RoundToInt(Screen.height/65f),12,25);
-            GUI.Label(new Rect(Screen.width*.69f,Screen.height*.57f,Screen.width*.29f,Screen.height*.29f),Describe(m),infoStyle);
+            string description=Describe(m);
+            float width=Screen.width*.31f;
+            float height=infoStyle.CalcHeight(new GUIContent(description),width);
+            GUI.Label(new Rect(Screen.width*.67f,Mathf.Max(20,Screen.height*.80f-height),width,height),description,infoStyle);
         }
     }
 }
-

@@ -1,0 +1,15 @@
+{
+  "replacements": [
+    {
+      "matches": [
+        "*:MCFoods_EatingSource:MCFoods_Eating"
+      ],
+      "sounds": [
+        {
+          "sound": "Eating/MCEat.mp3",
+          "weight": 100
+        }
+      ]
+    }
+  ]
+}

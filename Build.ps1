@@ -1,4 +1,4 @@
-param([string]$GamePath='E:\SteamLibrary\steamapps\common\PEAK', [string]$DotnetPath='C:\Users\Mr\Documents\Codex\2026-10-11\e-steamlibrary-steamapps-common-peak\work\webtablet-build\dotnet-sdk\dotnet.exe')
+param([string]$GamePath='E:\SteamLibrary\steamapps\common\PEAK', [string]$DotnetPath='dotnet')
 $ErrorActionPreference='Stop'
 $env:DOTNET_CLI_HOME=Join-Path $PSScriptRoot '.build\dotnet-home'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT='1'

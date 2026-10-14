@@ -7,7 +7,7 @@ namespace MinecraftFoods
     [Serializable] public sealed class FoodDefinition
     {
         public string id, name, texture, cookedName, cookedTexture, rarity, description, effectDescription;
-        public float hunger, saturation, cookedHunger, cookedSaturation;
+        public float hunger, bonusStamina, cookedHunger, cookedBonusStamina;
         public int scorch, wreck, weight, uses = 1;
         public float burnPoison;
         public bool HasCooked => !string.IsNullOrEmpty(cookedTexture);
@@ -21,8 +21,8 @@ namespace MinecraftFoods
         }
         public string TextureAt(int stage) => Cooked(stage) ? cookedTexture : texture;
         public float NutritionFactor(int stage) => stage >= wreck ? 0 : stage < scorch ? 1 : Mathf.Max(.1f, 1f - .3f * (stage - scorch + 1));
-        public float HungerAt(int stage) => (Cooked(stage) ? cookedHunger : hunger) * NutritionFactor(stage);
-        public float SaturationAt(int stage) => (Cooked(stage) ? cookedSaturation : saturation) * NutritionFactor(stage);
+        public float HungerAt(int stage) => (stage >= 1 ? cookedHunger : hunger) * NutritionFactor(stage);
+        public float BonusAt(int stage) => (stage >= 1 ? cookedBonusStamina : bonusStamina) * NutritionFactor(stage);
         public float BurnPoisonAt(int stage) => stage < scorch || stage >= wreck ? 0 : Mathf.Min(.6f, burnPoison * (stage - scorch + 1));
         public Color TintAt(int stage)
         {

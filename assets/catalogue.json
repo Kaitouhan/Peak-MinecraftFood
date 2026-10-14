@@ -4,8 +4,7 @@
       "id": "apple",
       "name": "苹果",
       "texture": "apple",
-      "hunger": 4,
-      "saturation": 2.4,
+      "hunger": 18,
       "description": "清脆多汁的红苹果，适合在攀登途中快速补充体力。",
       "rarity": "common",
       "scorch": 3,
@@ -13,14 +12,15 @@
       "burnPoison": 0.075,
       "weight": 40,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 12,
+      "cookedHunger": 36,
+      "cookedBonusStamina": 18
     },
     {
       "id": "baked_potato",
       "name": "烤马铃薯",
       "texture": "baked_potato",
-      "hunger": 5,
-      "saturation": 6.0,
+      "hunger": 35,
       "description": "烤得松软温热的马铃薯，是朴实可靠的野外口粮。",
       "rarity": "uncommon",
       "scorch": 5,
@@ -28,14 +28,15 @@
       "burnPoison": 0.05,
       "weight": 18,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 33,
+      "cookedHunger": 70,
+      "cookedBonusStamina": 50
     },
     {
       "id": "beef",
       "name": "生牛肉",
       "texture": "beef",
-      "hunger": 3,
-      "saturation": 1.8,
+      "hunger": 18,
       "description": "新鲜的生牛肉，烤熟后会成为香气十足的牛排。",
       "rarity": "common",
       "scorch": 6,
@@ -45,16 +46,15 @@
       "uses": 1,
       "cookedName": "牛排",
       "cookedTexture": "cooked_beef",
-      "cookedHunger": 8,
-      "cookedSaturation": 12.8,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。 首次烹饪原地变熟、提高营养。"
+      "cookedHunger": 36,
+      "bonusStamina": 12,
+      "cookedBonusStamina": 33
     },
     {
       "id": "beetroot",
       "name": "甜菜根",
       "texture": "beetroot",
-      "hunger": 1,
-      "saturation": 1.2,
+      "hunger": 12,
       "description": "带着泥土气息的甜菜根，分量不大，胜在容易携带。",
       "rarity": "common",
       "scorch": 4,
@@ -62,14 +62,15 @@
       "burnPoison": 0.05,
       "weight": 40,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 12,
+      "cookedHunger": 24,
+      "cookedBonusStamina": 18
     },
     {
       "id": "beetroot_soup",
       "name": "甜菜汤",
       "texture": "beetroot_soup",
-      "hunger": 6,
-      "saturation": 7.2,
+      "hunger": 44,
       "description": "浓稠的甜菜汤，热乎乎的一碗能让人重新振作。",
       "rarity": "uncommon",
       "scorch": 3,
@@ -77,14 +78,15 @@
       "burnPoison": 0.075,
       "weight": 18,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 44,
+      "cookedHunger": 88,
+      "cookedBonusStamina": 66
     },
     {
       "id": "bread",
       "name": "面包",
       "texture": "bread",
-      "hunger": 5,
-      "saturation": 6.0,
+      "hunger": 18,
       "description": "结实耐放的面包，背包里的经典远足补给。",
       "rarity": "common",
       "scorch": 3,
@@ -92,14 +94,15 @@
       "burnPoison": 0.075,
       "weight": 40,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 23,
+      "cookedHunger": 36,
+      "cookedBonusStamina": 34
     },
     {
       "id": "cake",
       "name": "蛋糕",
       "texture": "cake",
-      "hunger": 2,
-      "saturation": 0.4,
+      "hunger": 12,
       "description": "松软甜美的大蛋糕，可以分成七口慢慢享用。",
       "rarity": "uncommon",
       "scorch": 2,
@@ -107,14 +110,15 @@
       "burnPoison": 0.1,
       "weight": 18,
       "uses": 7,
-      "effectDescription": "每口2饱食/0.4饱和，可吃7口；每口分别结算，最后一口消耗物品。"
+      "bonusStamina": 12,
+      "cookedHunger": 24,
+      "cookedBonusStamina": 18
     },
     {
       "id": "carrot",
       "name": "胡萝卜",
       "texture": "carrot",
-      "hunger": 3,
-      "saturation": 3.6,
+      "hunger": 18,
       "description": "爽脆的胡萝卜，清甜解腻，随手就能吃。",
       "rarity": "common",
       "scorch": 4,
@@ -122,14 +126,15 @@
       "burnPoison": 0.05,
       "weight": 40,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 12,
+      "cookedHunger": 36,
+      "cookedBonusStamina": 18
     },
     {
       "id": "chicken",
       "name": "生鸡肉",
       "texture": "chicken",
-      "hunger": 2,
-      "saturation": 1.2,
+      "hunger": 18,
       "description": "未经烹饪的生鸡肉，请先烤熟再食用。",
       "rarity": "common",
       "scorch": 4,
@@ -139,16 +144,15 @@
       "uses": 1,
       "cookedName": "熟鸡肉",
       "cookedTexture": "cooked_chicken",
-      "cookedHunger": 6,
-      "cookedSaturation": 7.2,
-      "effectDescription": "生吃30%概率在30秒增加15点饥饿；首次烹饪后取消此风险，营养提高。"
+      "cookedHunger": 36,
+      "bonusStamina": 12,
+      "cookedBonusStamina": 33
     },
     {
       "id": "chorus_fruit",
       "name": "紫颂果",
       "texture": "chorus_fruit",
-      "hunger": 4,
-      "saturation": 2.4,
+      "hunger": 18,
       "description": "来自异界的紫色果实，入口后身体会短暂变得轻盈。",
       "rarity": "rare",
       "scorch": 2,
@@ -156,14 +160,15 @@
       "burnPoison": 0.1,
       "weight": 6,
       "uses": 1,
-      "effectDescription": "未烧焦时随机传送到附近：水平8米范围，最多16次寻找可站立空位；冷却1秒，找不到则留在原地。"
+      "bonusStamina": 23,
+      "cookedHunger": 36,
+      "cookedBonusStamina": 34
     },
     {
       "id": "cod",
       "name": "生鳕鱼",
       "texture": "cod",
-      "hunger": 2,
-      "saturation": 0.4,
+      "hunger": 18,
       "description": "新鲜的生鳕鱼，先在火上烤熟会成为更好的口粮。",
       "rarity": "common",
       "scorch": 3,
@@ -173,16 +178,15 @@
       "uses": 1,
       "cookedName": "熟鳕鱼",
       "cookedTexture": "cooked_cod",
-      "cookedHunger": 5,
-      "cookedSaturation": 6,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。 首次烹饪原地变熟、提高营养。"
+      "cookedHunger": 36,
+      "bonusStamina": 12,
+      "cookedBonusStamina": 33
     },
     {
       "id": "cookie",
       "name": "曲奇",
       "texture": "cookie",
-      "hunger": 2,
-      "saturation": 0.4,
+      "hunger": 12,
       "description": "甜甜脆脆的小曲奇，一口一个，适合路上解馋。",
       "rarity": "common",
       "scorch": 2,
@@ -190,14 +194,15 @@
       "burnPoison": 0.1,
       "weight": 40,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 12,
+      "cookedHunger": 24,
+      "cookedBonusStamina": 18
     },
     {
       "id": "enchanted_golden_apple",
       "name": "附魔金苹果",
       "texture": "golden_apple",
-      "hunger": 4,
-      "saturation": 9.6,
+      "hunger": 48,
       "description": "闪着附魔微光的珍贵金苹果，可带来强力短暂增益，之后会有些困倦。",
       "rarity": "epic",
       "scorch": 9,
@@ -205,14 +210,15 @@
       "burnPoison": 0.025,
       "weight": 1,
       "uses": 1,
-      "effectDescription": "未烧焦：20秒恢复80点伤势，80点吸收盾持续120秒；300秒减伤20%和抗热；额外10秒无敌，结束增加5点昏睡（可关闭）。"
+      "bonusStamina": 65,
+      "cookedHunger": 96,
+      "cookedBonusStamina": 98
     },
     {
       "id": "glow_berries",
       "name": "发光浆果",
       "texture": "glow_berries",
-      "hunger": 2,
-      "saturation": 0.4,
+      "hunger": 12,
       "description": "微微发亮的浆果，酸甜可口，黑暗中也很醒目。",
       "rarity": "common",
       "scorch": 2,
@@ -220,14 +226,15 @@
       "burnPoison": 0.075,
       "weight": 40,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 12,
+      "cookedHunger": 24,
+      "cookedBonusStamina": 18
     },
     {
       "id": "golden_apple",
       "name": "金苹果",
       "texture": "golden_apple",
-      "hunger": 4,
-      "saturation": 9.6,
+      "hunger": 25,
       "description": "裹着金箔的稀有苹果，能带来短暂保护与耐力，之后略感困倦。",
       "rarity": "rare",
       "scorch": 7,
@@ -235,14 +242,15 @@
       "burnPoison": 0.05,
       "weight": 6,
       "uses": 1,
-      "effectDescription": "未烧焦：5秒恢复20点伤势，20点伤害吸收盾持续120秒；额外3秒无敌，结束增加2.5点昏睡（可关闭）。"
+      "bonusStamina": 40,
+      "cookedHunger": 50,
+      "cookedBonusStamina": 60
     },
     {
       "id": "golden_carrot",
       "name": "金胡萝卜",
       "texture": "golden_carrot",
-      "hunger": 6,
-      "saturation": 14.4,
+      "hunger": 46,
       "description": "金色胡萝卜营养丰厚，食用后可短暂维持充沛体力。",
       "rarity": "rare",
       "scorch": 6,
@@ -250,14 +258,15 @@
       "burnPoison": 0.05,
       "weight": 6,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 46,
+      "cookedHunger": 92,
+      "cookedBonusStamina": 69
     },
     {
       "id": "honey_bottle",
       "name": "蜂蜜瓶",
       "texture": "honey_bottle",
-      "hunger": 6,
-      "saturation": 1.2,
+      "hunger": 12,
       "description": "甜蜜的蜂蜜能迅速补充饥饿，还可缓解中毒。",
       "rarity": "uncommon",
       "scorch": 3,
@@ -265,14 +274,15 @@
       "burnPoison": 0.075,
       "weight": 18,
       "uses": 1,
-      "effectDescription": "未烧焦时清除中毒和本模组持续毒；PEAK原生解毒同时减少孢子。"
+      "bonusStamina": 55,
+      "cookedHunger": 24,
+      "cookedBonusStamina": 82
     },
     {
       "id": "melon_slice",
       "name": "西瓜片",
       "texture": "melon_slice",
-      "hunger": 2,
-      "saturation": 1.2,
+      "hunger": 18,
       "description": "清凉多汁的西瓜片，水分充足，适合炎热路段。",
       "rarity": "common",
       "scorch": 2,
@@ -280,14 +290,15 @@
       "burnPoison": 0.1,
       "weight": 40,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 12,
+      "cookedHunger": 36,
+      "cookedBonusStamina": 18
     },
     {
       "id": "milk_bucket",
       "name": "牛奶桶",
       "texture": "milk_bucket",
-      "hunger": 0,
-      "saturation": 0,
+      "hunger": 18,
       "description": "一桶鲜奶不能直接充饥，但能帮助清除身上的毒素。",
       "rarity": "uncommon",
       "scorch": 2,
@@ -295,14 +306,15 @@
       "burnPoison": 0.1,
       "weight": 18,
       "uses": 1,
-      "effectDescription": "未烧焦时清除原生限时增益/减益和本模组限时效果，清除中毒、昏睡；不恢复饥饿或伤势。"
+      "bonusStamina": 23,
+      "cookedHunger": 36,
+      "cookedBonusStamina": 34
     },
     {
       "id": "mushroom_stew",
       "name": "蘑菇煲",
       "texture": "mushroom_stew",
-      "hunger": 6,
-      "saturation": 7.2,
+      "hunger": 45,
       "description": "蘑菇炖成的热汤，朴素却暖胃。",
       "rarity": "uncommon",
       "scorch": 3,
@@ -310,14 +322,15 @@
       "burnPoison": 0.1,
       "weight": 18,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 45,
+      "cookedHunger": 90,
+      "cookedBonusStamina": 68
     },
     {
       "id": "mutton",
       "name": "生羊肉",
       "texture": "mutton",
-      "hunger": 2,
-      "saturation": 1.2,
+      "hunger": 18,
       "description": "还未烤制的羊肉，放上营火烹熟后更暖胃、更顶饱。",
       "rarity": "common",
       "scorch": 5,
@@ -327,16 +340,15 @@
       "uses": 1,
       "cookedName": "熟羊肉",
       "cookedTexture": "cooked_mutton",
-      "cookedHunger": 6,
-      "cookedSaturation": 9.6,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。 首次烹饪原地变熟、提高营养。"
+      "cookedHunger": 36,
+      "bonusStamina": 12,
+      "cookedBonusStamina": 33
     },
     {
       "id": "poisonous_potato",
       "name": "毒马铃薯",
       "texture": "poisonous_potato",
-      "hunger": 2,
-      "saturation": 1.2,
+      "hunger": 18,
       "description": "表皮透着诡异绿意的马铃薯，吃下后有机会中毒。",
       "rarity": "uncommon",
       "scorch": 3,
@@ -344,14 +356,15 @@
       "burnPoison": 0.125,
       "weight": 18,
       "uses": 1,
-      "effectDescription": "60%概率中毒：立即5点，5秒再增加5点；每次加热两部分各增加2.5点。"
+      "bonusStamina": 23,
+      "cookedHunger": 36,
+      "cookedBonusStamina": 34
     },
     {
       "id": "porkchop",
       "name": "生猪排",
       "texture": "porkchop",
-      "hunger": 3,
-      "saturation": 1.8,
+      "hunger": 20,
       "description": "还没烤过的生猪排，先放到营火上煮熟再吃更稳妥。",
       "rarity": "common",
       "scorch": 5,
@@ -361,16 +374,15 @@
       "uses": 1,
       "cookedName": "熟猪排",
       "cookedTexture": "cooked_porkchop",
-      "cookedHunger": 8,
-      "cookedSaturation": 12.8,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。 首次烹饪原地变熟、提高营养。"
+      "cookedHunger": 40,
+      "bonusStamina": 12,
+      "cookedBonusStamina": 33
     },
     {
       "id": "potato",
       "name": "马铃薯",
       "texture": "potato",
-      "hunger": 1,
-      "saturation": 0.6,
+      "hunger": 18,
       "description": "普通生马铃薯，营养有限；烤熟后会变成更顶饱的烤马铃薯。",
       "rarity": "common",
       "scorch": 5,
@@ -380,16 +392,15 @@
       "uses": 1,
       "cookedName": "烤马铃薯",
       "cookedTexture": "baked_potato",
-      "cookedHunger": 5,
-      "cookedSaturation": 6,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。 首次烹饪原地变熟、提高营养。"
+      "cookedHunger": 36,
+      "bonusStamina": 12,
+      "cookedBonusStamina": 33
     },
     {
       "id": "pufferfish",
       "name": "河豚",
       "texture": "pufferfish",
-      "hunger": 1,
-      "saturation": 0.2,
+      "hunger": 18,
       "description": "看起来鼓鼓囊囊的河豚，入口会立刻引发强烈中毒。",
       "rarity": "rare",
       "scorch": 2,
@@ -397,14 +408,15 @@
       "burnPoison": 0.125,
       "weight": 6,
       "uses": 1,
-      "effectDescription": "必定中毒：立即30点，60秒内再累积35点；15秒额外饥饿15点；恶心映射为昏睡10+10点。每次加热额外增加毒性。"
+      "bonusStamina": 23,
+      "cookedHunger": 36,
+      "cookedBonusStamina": 34
     },
     {
       "id": "pumpkin_pie",
       "name": "南瓜派",
       "texture": "pumpkin_pie",
-      "hunger": 8,
-      "saturation": 4.8,
+      "hunger": 46,
       "description": "香甜扎实的南瓜派，一块就能带来满满饱腹感。",
       "rarity": "uncommon",
       "scorch": 3,
@@ -412,14 +424,15 @@
       "burnPoison": 0.05,
       "weight": 18,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 44,
+      "cookedHunger": 92,
+      "cookedBonusStamina": 66
     },
     {
       "id": "rabbit",
       "name": "生兔肉",
       "texture": "rabbit",
-      "hunger": 3,
-      "saturation": 1.8,
+      "hunger": 18,
       "description": "新鲜的生兔肉，最好先烤熟；烹饪得当会变成兔肉料理。",
       "rarity": "common",
       "scorch": 4,
@@ -429,16 +442,15 @@
       "uses": 1,
       "cookedName": "熟兔肉",
       "cookedTexture": "cooked_rabbit",
-      "cookedHunger": 5,
-      "cookedSaturation": 6,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。 首次烹饪原地变熟、提高营养。"
+      "cookedHunger": 36,
+      "bonusStamina": 12,
+      "cookedBonusStamina": 33
     },
     {
       "id": "rabbit_stew",
       "name": "兔肉煲",
       "texture": "rabbit_stew",
-      "hunger": 10,
-      "saturation": 12.0,
+      "hunger": 48,
       "description": "丰盛的兔肉炖菜，蔬菜与肉汤都能补充不少能量。",
       "rarity": "uncommon",
       "scorch": 4,
@@ -446,14 +458,15 @@
       "burnPoison": 0.075,
       "weight": 18,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 46,
+      "cookedHunger": 96,
+      "cookedBonusStamina": 69
     },
     {
       "id": "rotten_flesh",
       "name": "腐肉",
       "texture": "rotten_flesh",
-      "hunger": 4,
-      "saturation": 0.8,
+      "hunger": 22,
       "description": "散发异味的腐肉，勉强能垫肚子，吃下后会让人短暂犯困。",
       "rarity": "common",
       "scorch": 2,
@@ -461,14 +474,15 @@
       "burnPoison": 0.125,
       "weight": 40,
       "uses": 1,
-      "effectDescription": "80%概率在30秒增加20点饥饿；每次加热额外增加5点中毒（最多50点）。"
+      "bonusStamina": 23,
+      "cookedHunger": 44,
+      "cookedBonusStamina": 34
     },
     {
       "id": "salmon",
       "name": "生鲑鱼",
       "texture": "salmon",
-      "hunger": 2,
-      "saturation": 0.4,
+      "hunger": 20,
       "description": "新鲜鲑鱼，烤熟后更有营养，也更适合补充体力。",
       "rarity": "common",
       "scorch": 4,
@@ -478,16 +492,15 @@
       "uses": 1,
       "cookedName": "熟鲑鱼",
       "cookedTexture": "cooked_salmon",
-      "cookedHunger": 6,
-      "cookedSaturation": 9.6,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。 首次烹饪原地变熟、提高营养。"
+      "cookedHunger": 40,
+      "bonusStamina": 12,
+      "cookedBonusStamina": 33
     },
     {
       "id": "spider_eye",
       "name": "蜘蛛眼",
       "texture": "spider_eye",
-      "hunger": 2,
-      "saturation": 3.2,
+      "hunger": 18,
       "description": "蜘蛛的眼球，味道令人不安，食用会带来短暂毒性。",
       "rarity": "rare",
       "scorch": 2,
@@ -495,14 +508,15 @@
       "burnPoison": 0.125,
       "weight": 6,
       "uses": 1,
-      "effectDescription": "必定中毒：立即5点，4秒再增加5点；每次加热两部分各增加2.5点。"
+      "bonusStamina": 23,
+      "cookedHunger": 36,
+      "cookedBonusStamina": 34
     },
     {
       "id": "suspicious_stew",
       "name": "可疑的炖菜",
       "texture": "suspicious_stew",
-      "hunger": 6,
-      "saturation": 7.2,
+      "hunger": 44,
       "description": "成分难以辨认的炖菜，可能带来短暂变化，随后稍感困倦。",
       "rarity": "uncommon",
       "scorch": 3,
@@ -510,14 +524,15 @@
       "burnPoison": 0.1,
       "weight": 18,
       "uses": 1,
-      "effectDescription": "未烧焦时等概率抽取8种效果之一：再生8秒、饱和+7点、低重力6秒、抗热4秒、失明8秒、中毒12秒、昏睡10点、持续伤势8秒。"
+      "bonusStamina": 44,
+      "cookedHunger": 88,
+      "cookedBonusStamina": 66
     },
     {
       "id": "sweet_berries",
       "name": "甜浆果",
       "texture": "sweet_berries",
-      "hunger": 2,
-      "saturation": 0.4,
+      "hunger": 12,
       "description": "野生甜浆果，小巧酸甜，适合随手补充一点能量。",
       "rarity": "common",
       "scorch": 2,
@@ -525,14 +540,15 @@
       "burnPoison": 0.075,
       "weight": 40,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 12,
+      "cookedHunger": 24,
+      "cookedBonusStamina": 18
     },
     {
       "id": "tropical_fish",
       "name": "热带鱼",
       "texture": "tropical_fish",
-      "hunger": 1,
-      "saturation": 0.2,
+      "hunger": 18,
       "description": "色彩鲜艳的热带鱼，能垫垫肚子，但营养并不算多。",
       "rarity": "rare",
       "scorch": 3,
@@ -540,7 +556,9 @@
       "burnPoison": 0.1,
       "weight": 6,
       "uses": 1,
-      "effectDescription": "提供饱食度与饱和储备，无额外魔法效果。"
+      "bonusStamina": 23,
+      "cookedHunger": 36,
+      "cookedBonusStamina": 34
     }
   ]
 }

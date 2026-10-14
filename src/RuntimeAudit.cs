@@ -27,7 +27,7 @@ namespace MinecraftFoods
                 for(int stage=0;stage<=12;stage++)
                 {
                     Check(!f.NameAt(stage).Contains("LOC:")&&!f.NameAt(stage).Contains("NAME_"),f.id+" localized name");
-                    Check(f.HungerAt(stage)>=0&&f.HungerAt(stage)<=20&&f.SaturationAt(stage)>=0&&f.SaturationAt(stage)<=20,f.id+" valid nutrition");
+                    Check(f.HungerAt(stage)>=0&&f.HungerAt(stage)<=100&&f.BonusAt(stage)>=0&&f.BonusAt(stage)<=100,f.id+" valid nutrition");
                     Check(Visuals.MeshFor(f.TextureAt(stage)).vertexCount>0,f.id+" mesh");
                     Check(Visuals.TextureFor(f.TextureAt(stage)).filterMode==FilterMode.Point,f.id+" sharp texture");
                     Check(stage<f.wreck || f.HungerAt(stage)==0,f.id+" wreck nutrition");
