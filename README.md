@@ -16,7 +16,7 @@
 - **特殊效果**：河豚中毒、紫颂果随机传送、金苹果短暂无敌及结束后的轻微反作用等效果按食物分别配置。
 - **普通箱子掉落**：按稀有度和权重混入所有普通箱子的物品位置；默认总份额为 25%，可由房主配置。
 - **火焰与过度烹饪**：所有食物接入 PEAK 的烹饪和烧毁流程。烧焦会改变颜色，过度烹饪会累积中毒风险。
-- **原版风格资源**：使用 Jonesy__07 的 Minecraft Eating 1.0.3 所含 `MCEat.mp3` 作为成功食用音效；其它第三方素材权利归其原权利人。
+- **原版风格资源**：含 Minecraft 风格的物品贴图及进食音效；第三方素材权利归其原权利人。
 
 ## 食物效果举例
 
@@ -57,7 +57,7 @@ Thunderstore 会自动安装以下依赖：
 - `Loot.MinecraftShare`：每个普通箱子掉落位置被 Minecraft 食物占用的总份额，默认 `0.25`。
 - `Visuals.GripTemplate`：默认 `TrailMix`；可选 `SmallEgg` 以适配不同的拿取姿势。
 - `Effects.AllowFoodEffectsInAirport`：机场测试区是否允许本模组食物效果。
-- `Audio.MinecraftEatingSounds`：是否播放 `MCEat.mp3` 进食音效。
+- `Audio.MinecraftEatingSounds`：是否播放随包进食音效。
 
 改动掉率或握持模板后请重启游戏。多人由房主的掉率配置决定。
 
@@ -82,5 +82,4 @@ Thunderstore 会自动安装以下依赖：
 - PEAK 为 Landfall 的游戏；本项目是非官方社区模组。
 - Minecraft 及其原版资源相关权利归 Mojang Studios / Microsoft。本模组与 Mojang Studios、Microsoft 或 Landfall 均无隶属关系。
 - 代码使用 [MIT License](LICENSE)；第三方贴图与音效不因本仓库而改变其原有权利归属。
-
 

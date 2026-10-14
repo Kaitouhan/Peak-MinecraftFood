@@ -46,7 +46,7 @@ namespace MinecraftFoods
             AppleAftereffects = Config.Bind("Effects", "GoldenAppleAftereffects", true, "PEAK adaptation: 2.5/5 drowsiness after golden/enchanted apple invulnerability ends.");
             GripTemplate = Config.Bind("Visuals", "GripTemplate", "TrailMix", "TrailMix (recommended) or SmallEgg. Restart after changing.");
             ShowInfo = Config.Bind("UI", "ShowFoodInformation", true, "Show names, nutrition, effects and cooking thresholds; independent of other personal mods.");
-            EatAudio = Config.Bind("Audio", "MinecraftEatingSounds", true, "Play the bundled Minecraft_Eating MCEat sound locally on successful consumption.");
+            EatAudio = Config.Bind("Audio", "MinecraftEatingSounds", true, "Play bundled Minecraft eating sounds locally on successful consumption.");
             try
             {
                 var catalogue = Newtonsoft.Json.JsonConvert.DeserializeObject<Catalogue>(File.ReadAllText(Path.Combine(Root,"catalogue.json")));
@@ -144,14 +144,9 @@ namespace MinecraftFoods
         static Rarity RarityFor(string rarity) => rarity == "epic" ? Rarity.Mythic : rarity == "rare" ? Rarity.Rare : rarity == "uncommon" ? Rarity.Uncommon : Rarity.Common;
         IEnumerator LoadAudio()
         {
-            string directory=Path.Combine(Root,"sounds");
-            if(!Directory.Exists(directory)) yield break;
-            foreach (var path in Directory.GetFiles(directory).Where(p =>
-                string.Equals(Path.GetExtension(p), ".mp3", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(Path.GetExtension(p), ".ogg", StringComparison.OrdinalIgnoreCase)))
+            foreach (var path in Directory.GetFiles(Path.Combine(Root,"sounds"),"*.ogg"))
             {
-                AudioType type=string.Equals(Path.GetExtension(path), ".mp3", StringComparison.OrdinalIgnoreCase) ? AudioType.MPEG : AudioType.OGGVORBIS;
-                using (var req = UnityWebRequestMultimedia.GetAudioClip(new Uri(path).AbsoluteUri,type))
+                using (var req = UnityWebRequestMultimedia.GetAudioClip(new Uri(path).AbsoluteUri,AudioType.OGGVORBIS))
                 {
                     yield return req.SendWebRequest();
                     if (req.result == UnityWebRequest.Result.Success) Sounds.Add(DownloadHandlerAudioClip.GetContent(req));
@@ -203,5 +198,4 @@ namespace MinecraftFoods
         }
     }
 }
-
 
