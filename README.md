@@ -1,4 +1,4 @@
-![Minecraft Foods for PEAK](docs/media/banner-1.25.png)
+![Minecraft Foods for PEAK](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/docs/media/banner-1.25.png)
 
 # Minecraft Foods
 
@@ -36,7 +36,7 @@
 
 | 日常补给 | 营火料理 | 稀有食物 |
 | --- | --- | --- |
-| ![苹果](assets/textures/apple_icon.png) | ![牛排](assets/textures/cooked_beef_icon.png) | ![金苹果](assets/textures/golden_apple_icon.png) |
+| ![苹果](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/apple_icon.png) | ![牛排](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/cooked_beef_icon.png) | ![金苹果](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/golden_apple_icon.png) |
 | 苹果、面包、饼干、胡萝卜和浆果 | 肉类、鱼类、烤马铃薯和各类汤食 | 金苹果、紫颂果和迷之炖菜 |
 
 轻便零食适合途中补充，汤类和大餐适合消耗较大时使用。所有数值直接以 PEAK 的“移除饥饿”和“获得额外体力”显示。
@@ -63,11 +63,11 @@
 
 | 金苹果 | 紫颂果 | 河豚 |
 | --- | --- | --- |
-| ![金苹果](assets/textures/golden_apple_icon.png) | ![紫颂果](assets/textures/chorus_fruit_icon.png) | ![河豚](assets/textures/pufferfish_icon.png) |
+| ![金苹果](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/golden_apple_icon.png) | ![紫颂果](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/chorus_fruit_icon.png) | ![河豚](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/pufferfish_icon.png) |
 | 在危险路段争取喘息时间 | 随机寻找附近安全落脚点 | 食用会中毒，加热也不会让它安全 |
 
-- **金苹果**：获得 5 秒无敌、持续恢复受伤和吸收盾；无敌结束后倒地失控 3 秒。
-- **附魔金苹果**：获得 12 秒无敌、更强恢复和吸收盾，附带短时减伤与炎热防护；无敌结束后倒地失控 6 秒。
+- **金苹果**：获得 5 秒无敌、持续恢复受伤和吸收盾；无敌结束后将 PEAK 睡意值拉满并维持 6 秒。
+- **附魔金苹果**：获得 12 秒无敌、更强恢复和吸收盾，附带短时减伤与炎热防护；无敌结束后将 PEAK 睡意值拉满并维持 12 秒。后遗症比之前版本加倍，使用 PEAK 原生睡意值，不会强制倒地或夺去控制。
 - **紫颂果**：尝试传送到水平 30 米内的安全落脚点，没有合适位置时留在原地。
 - **蜂蜜**：清除中毒与相关持续中毒效果；**牛奶**清除临时效果、中毒和嗜睡，也会移除正面效果。
 - **迷之炖菜**：随机获得一种正面或负面效果。
