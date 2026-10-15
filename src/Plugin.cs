@@ -29,6 +29,7 @@ namespace MinecraftFoods
         internal static readonly Dictionary<string, FoodDefinition> Foods = new Dictionary<string, FoodDefinition>(StringComparer.Ordinal);
         internal static readonly List<Item> Registered = new List<Item>();
         internal static ConfigEntry<float> LootShare;
+        internal static ConfigEntry<float> CursedLootShare, ClownLootShare;
         internal static ConfigEntry<bool> AirportEffects, AppleAftereffects;
         internal static ConfigEntry<string> GripTemplate;
         internal static ConfigEntry<bool> ShowInfo;
@@ -41,8 +42,10 @@ namespace MinecraftFoods
             Instance = this; Log = Logger;
             Root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             LootShare = Config.Bind("Loot", "MinecraftShare", .25f, new ConfigDescription("Minecraft food share per ordinary luggage slot. Host setting; restart for changes.", new AcceptableValueRange<float>(0f,.8f)));
+            CursedLootShare = Config.Bind("Loot", "CursedLuggageMinecraftShare", .35f, new ConfigDescription("Minecraft food share per cursed luggage slot. Host setting; restart for changes.", new AcceptableValueRange<float>(0f,.8f)));
+            ClownLootShare = Config.Bind("Loot", "ClownLuggageMinecraftShare", .30f, new ConfigDescription("Minecraft food share per clown luggage slot. Host setting; restart for changes.", new AcceptableValueRange<float>(0f,.8f)));
             AirportEffects = Config.Bind("Effects", "AllowFoodEffectsInAirport", true, "Allow only this mod's food effects in the airport, for testing. Does not unlock environmental damage.");
-            AppleAftereffects = Config.Bind("Effects", "GoldenAppleAftereffects", true, "Golden/enchanted apple: 3/6 seconds of complete knockdown after invulnerability ends.");
+            AppleAftereffects = Config.Bind("Effects", "GoldenAppleAftereffects", true, "Golden/enchanted apple: hold PEAK Drowsy at maximum for 6/12 seconds after invulnerability ends (no forced loss of control).");
             GripTemplate = Config.Bind("Visuals", "GripTemplate", "TrailMix", "TrailMix (recommended) or SmallEgg. Restart after changing.");
             ShowInfo = Config.Bind("UI", "ShowFoodInformation", true, "Show names, nutrition, effects and cooking thresholds; independent of other personal mods.");
             try

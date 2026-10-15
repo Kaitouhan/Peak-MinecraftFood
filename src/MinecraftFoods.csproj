@@ -3,7 +3,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AssemblyName>MinecraftFoods</AssemblyName>
-    <Version>1.25.0</Version>
+    <Version>1.25.2</Version>
     <GameDir Condition="'$(GameDir)' == ''">E:\SteamLibrary\steamapps\common\PEAK</GameDir>
   </PropertyGroup>
   <ItemGroup>

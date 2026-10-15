@@ -89,21 +89,40 @@ namespace MinecraftFoods
         static void Postfix()
         {
             if(Plugin.Registered.Count==0 || LootData.AllSpawnWeightData==null)return;
-            double share=Plugin.LootShare.Value;
-            var weights=Plugin.Registered.ToDictionary(x=>x.itemID,x=>x.GetComponent<FoodMarker>().Definition.weight);
-            double sum=weights.Values.Sum();
+            var foods=Plugin.Registered.ToDictionary(x=>x.itemID,x=>x.GetComponent<FoodMarker>().Definition);
             foreach(var pool in LootData.AllSpawnWeightData)
             {
                 if(!pool.Key.ToString().StartsWith("Luggage",StringComparison.Ordinal))continue;
-                foreach(var id in weights.Keys)pool.Value.Remove(id);
+                double share=pool.Key.ToString()=="LuggageCursed" ? Plugin.CursedLootShare.Value :
+                    pool.Key.ToString()=="LuggageClown" ? Plugin.ClownLootShare.Value : Plugin.LootShare.Value;
+                foreach(var id in foods.Keys)pool.Value.Remove(id);
                 if(share<=0)continue;
                 // A larger integer unit prevents epic items rounding up to common odds.
                 foreach(var id in pool.Value.Keys.ToArray())pool.Value[id]*=128;
                 double vanilla=pool.Value.Values.Sum(x=>(double)x);
                 double budget=vanilla*share/(1-share);
-                if(vanilla==0)budget=sum;
-                foreach(var w in weights)pool.Value[w.Key]=Math.Max(1,(int)Math.Round(budget*w.Value/sum));
+                if(vanilla==0)budget=foods.Values.Sum(x=>(double)x.weight);
+                var poolName=pool.Key.ToString();
+                var tierShares=poolName=="LuggageCursed"
+                    ? new System.Collections.Generic.Dictionary<string,double>{{"common",35},{"uncommon",25},{"rare",30},{"special",10}}
+                    : poolName=="LuggageClown"
+                        ? new System.Collections.Generic.Dictionary<string,double>{{"common",45},{"uncommon",30},{"rare",18},{"special",7}}
+                        : new System.Collections.Generic.Dictionary<string,double>{{"common",60},{"uncommon",25},{"rare",12},{"special",3}};
+                var tierTotals=foods.Values.GroupBy(f=>LootTier(f,poolName)).ToDictionary(g=>g.Key,g=>g.Sum(f=>(double)f.weight));
+                foreach(var food in foods)
+                {
+                    string tier=LootTier(food.Value,poolName);
+                    double tierTotal=tierTotals[tier];
+                    double relative=tierShares[tier]/100.0 * food.Value.weight/tierTotal;
+                    pool.Value[food.Key]=Math.Max(1,(int)Math.Round(budget*relative));
+                }
             }
+        }
+        static string LootTier(FoodDefinition food,string poolName)
+        {
+            if(food.id=="golden_apple" || food.id=="enchanted_golden_apple" || food.id=="chorus_fruit")return "special";
+            if(poolName=="LuggageCursed" && food.id=="rotten_flesh")return "uncommon";
+            return string.IsNullOrEmpty(food.rarity) ? "common" : food.rarity.ToLowerInvariant();
         }
     }
 }

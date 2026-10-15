@@ -51,7 +51,10 @@ namespace MinecraftFoods
             foreach(var pool in LootData.AllSpawnWeightData.Where(x=>x.Key.ToString().StartsWith("Luggage")))
             {
                 double total=pool.Value.Values.Sum(x=>(double)x), mc=Plugin.Registered.Sum(x=>pool.Value.TryGetValue(x.itemID,out int w)?(double)w:0);
-                Check(Math.Abs(mc/total-Plugin.LootShare.Value)<.002,pool.Key+" loot fraction");
+                string poolName=pool.Key.ToString();
+                double expected=poolName=="LuggageCursed" ? Plugin.CursedLootShare.Value :
+                    poolName=="LuggageClown" ? Plugin.ClownLootShare.Value : Plugin.LootShare.Value;
+                Check(Math.Abs(mc/total-expected)<.002,pool.Key+" loot fraction");
                 lines.Add($"PASS {pool.Key}: {mc/total:P4} Minecraft share");
             }
             lines.Add($"PASS {checks} runtime assertions. No player/world gameplay was exercised.");

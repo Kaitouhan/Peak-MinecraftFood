@@ -29,7 +29,7 @@ namespace MinecraftFoods
     public sealed class FoodPlayerState : MonoBehaviour
     {
         internal float Shield;
-        private float shieldUntil, resistUntil, fireUntil, afterAt, afterAmount, nextTeleport;
+        private float shieldUntil, resistUntil, fireUntil, afterAt, afterDrowsyDuration, drowsyHoldUntil, nextTeleport;
         private Character character;
         private readonly Dictionary<string,TimedStatus> timers=new Dictionary<string,TimedStatus>();
         private float tick;
@@ -103,7 +103,9 @@ namespace MinecraftFoods
             Shield=Mathf.Max(Shield,enchanted?.8f:.2f); shieldUntil=Time.time+60;
             Timed("regeneration",S.Injury,enchanted?20:5,enchanted?.8f:.2f,true);
             if(enchanted){resistUntil=Time.time+60;fireUntil=Time.time+60;}
-            if(Plugin.AppleAftereffects.Value){afterAmount=Mathf.Max(afterAt>Time.time?afterAmount:0,enchanted?6f:3f);afterAt=Mathf.Max(afterAt,Time.time+invincible);}
+            // Replace the old 3/6-second knockdown with PEAK's native Drowsy meter,
+            // held at its cap for twice as long: 6/12 seconds after invincibility ends.
+            if(Plugin.AppleAftereffects.Value){afterDrowsyDuration=Mathf.Max(afterAt>Time.time?afterDrowsyDuration:0,enchanted?12f:6f);afterAt=Mathf.Max(afterAt,Time.time+invincible);}
         }
         internal void RemoveFoodPoisonTimers()
         {
@@ -120,7 +122,7 @@ namespace MinecraftFoods
         }
         private void Milk()
         {
-            timers.Clear(); Shield=0; shieldUntil=resistUntil=fireUntil=afterAt=afterAmount=0;
+            timers.Clear(); Shield=0; shieldUntil=resistUntil=fireUntil=afterAt=afterDrowsyDuration=drowsyHoldUntil=0;
             var a=character.refs.afflictions;
             foreach(var aff in a.afflictionList.ToArray())a.RemoveAffliction(aff);
             a.SubtractStatus(S.Poison,1);a.SubtractStatus(S.Drowsy,1);
@@ -146,7 +148,7 @@ namespace MinecraftFoods
             Vector3 origin=character.Center;
             for(int i=0;i<16;i++)
             {
-                var circle=UnityEngine.Random.insideUnitCircle*8;
+                var circle=UnityEngine.Random.insideUnitCircle*30;
                 var start=origin+new Vector3(circle.x,4,circle.y);
                 if(!Physics.Raycast(start,Vector3.down,out var hit,12,~0,QueryTriggerInteraction.Ignore) || hit.normal.y<.65f || hit.rigidbody)continue;
                 Vector3 feet=hit.point+Vector3.up*.1f, center=feet+Vector3.up*.9f;
@@ -178,9 +180,10 @@ namespace MinecraftFoods
         void Update()
         {
             if(!character || !character.IsLocal)return;
-            if(character.data.dead){timers.Clear();Shield=0;afterAt=resistUntil=fireUntil=shieldUntil=0;return;}
+            if(character.data.dead){timers.Clear();Shield=0;afterAt=resistUntil=fireUntil=shieldUntil=drowsyHoldUntil=0;return;}
             if(Time.time>=shieldUntil)Shield=0;
-            if(afterAt>0 && Time.time>=afterAt){if(!character.refs.afflictions.HasAfflictionType(Affliction.AfflictionType.Invincibility,out var invincibility)){afterAt=0;character.photonView.RPC("RPCA_Fall",RpcTarget.All,afterAmount,0f);}}
+            if(afterAt>0 && Time.time>=afterAt){if(!character.refs.afflictions.HasAfflictionType(Affliction.AfflictionType.Invincibility,out var invincibility)){afterAt=0;drowsyHoldUntil=Time.time+afterDrowsyDuration;character.refs.afflictions.SetStatus(S.Drowsy,character.refs.afflictions.GetStatusCap(S.Drowsy));afterDrowsyDuration=0;}}
+            if(drowsyHoldUntil>Time.time)character.refs.afflictions.SetStatus(S.Drowsy,character.refs.afflictions.GetStatusCap(S.Drowsy));
             tick+=Time.deltaTime;if(tick<.25f)return;
             float dt=tick;tick=0;
             foreach(var key in timers.Keys.ToArray())
