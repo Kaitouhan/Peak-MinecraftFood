@@ -10,3 +10,9 @@ obj/
 thunderstore/
 icon-source.png
 *.zip
+
+# Local promotion projects and package build records
+.origincut/
+components/
+.package-staging-build-*/
+*.release-record.json

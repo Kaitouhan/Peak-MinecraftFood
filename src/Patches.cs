@@ -97,28 +97,28 @@ namespace MinecraftFoods
                     pool.Key.ToString()=="LuggageClown" ? Plugin.ClownLootShare.Value : Plugin.LootShare.Value;
                 foreach(var id in foods.Keys)pool.Value.Remove(id);
                 if(share<=0)continue;
-                // A larger integer unit prevents epic items rounding up to common odds.
-                foreach(var id in pool.Value.Keys.ToArray())pool.Value[id]*=128;
-                double vanilla=pool.Value.Values.Sum(x=>(double)x);
-                double budget=vanilla*share/(1-share);
-                if(vanilla==0)budget=foods.Values.Sum(x=>(double)x.weight);
-                var poolName=pool.Key.ToString();
-                var tierShares=poolName=="LuggageCursed"
-                    ? new System.Collections.Generic.Dictionary<string,double>{{"common",35},{"uncommon",25},{"rare",30},{"special",10}}
-                    : poolName=="LuggageClown"
-                        ? new System.Collections.Generic.Dictionary<string,double>{{"common",45},{"uncommon",30},{"rare",18},{"special",7}}
-                        : new System.Collections.Generic.Dictionary<string,double>{{"common",60},{"uncommon",25},{"rare",12},{"special",3}};
-                var tierTotals=foods.Values.GroupBy(f=>LootTier(f,poolName)).ToDictionary(g=>g.Key,g=>g.Sum(f=>(double)f.weight));
-                foreach(var food in foods)
+                var poolName=pool.Key.ToString();string configPool=ModSettings.Pool(poolName);
+                var choices=foods.Values.Select(f=>new LootChoice(f.id,LootTier(f,poolName),f.weight*ModSettings.Weight(configPool,f.id)));
+                var ratios=LootWeights.Normalize(choices,ModSettings.TierWeights(configPool));
+                if(ratios.Count==0)
                 {
-                    string tier=LootTier(food.Value,poolName);
-                    double tierTotal=tierTotals[tier];
-                    double relative=tierShares[tier]/100.0 * food.Value.weight/tierTotal;
-                    pool.Value[food.Key]=Math.Max(1,(int)Math.Round(budget*relative));
+                    Plugin.Log.LogWarning(poolName+": all mod food weights disabled; retaining vanilla loot.");continue;
                 }
+                double vanilla=pool.Value.Values.Sum(x=>Math.Max(0,(double)x));
+                if(vanilla<=0)share=1;
+                const double units=1000000;
+                foreach(var id in pool.Value.Keys.ToArray())
+                {
+                    if(share>=1 || pool.Value[id]<=0)pool.Value.Remove(id);
+                    else pool.Value[id]=Math.Max(1,(int)Math.Round(pool.Value[id]/vanilla*(1-share)*units));
+                }
+                foreach(var food in foods)
+                    if(ratios.TryGetValue(food.Value.id,out var ratio))
+                        pool.Value[food.Key]=Math.Max(1,(int)Math.Round(share*units*ratio));
+
             }
         }
-        static string LootTier(FoodDefinition food,string poolName)
+        internal static string LootTier(FoodDefinition food,string poolName)
         {
             if(food.id=="golden_apple" || food.id=="enchanted_golden_apple" || food.id=="chorus_fruit")return "special";
             if(poolName=="LuggageCursed" && food.id=="rotten_flesh")return "uncommon";

@@ -13,7 +13,8 @@ namespace MinecraftFoods
         void Update()
         {
             var holder=item?item.trueHolderCharacter:null;
-            bool eating=holder && holder.IsLocal && !item.finishedCast && !item.consuming
+            var marker=item?item.GetComponent<FoodMarker>():null;
+            bool eating=holder && holder.IsLocal && !holder.data.dead && marker && marker.Definition!=null && marker.Stage<marker.Definition.wreck && !item.finishedCast && !item.consuming
                 && (item.isUsingPrimary || item.isUsingSecondary);
             if(eating && !playing)
             {

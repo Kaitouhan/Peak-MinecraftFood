@@ -16,7 +16,7 @@ using Object = UnityEngine.Object;
 
 namespace MinecraftFoods
 {
-    [BepInPlugin(Id, "Minecraft Foods", "1.25.0")]
+    [BepInPlugin(Id, "Minecraft Foods", ModVersion.Value)]
     [BepInDependency("com.github.PEAKModding.PEAKLib.Items", "1.6.2")]
     [BepInDependency("com.github.PEAKModding.PEAKLib.Core")]
     [BepInDependency("me.loaforc.soundapi", "2.0.13")]
@@ -32,22 +32,29 @@ namespace MinecraftFoods
         internal static ConfigEntry<float> CursedLootShare, ClownLootShare;
         internal static ConfigEntry<bool> AirportEffects, AppleAftereffects;
         internal static ConfigEntry<string> GripTemplate;
-        internal static ConfigEntry<bool> ShowInfo;
+        internal static ConfigEntry<bool> ShowInfo, DetailedInfo, ShowEffectTimers;
         private Harmony harmony;
         private bool ready, failed, externalInfo;
         private GameObject templates;
         private GUIStyle infoStyle;
+        private Vector2 infoScroll;
+        private SettingsWindow settingsWindow;
         void Awake()
         {
             Instance = this; Log = Logger;
             Root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            LootShare = Config.Bind("Loot", "MinecraftShare", .25f, new ConfigDescription("Minecraft food share per ordinary luggage slot. Host setting; restart for changes.", new AcceptableValueRange<float>(0f,.8f)));
-            CursedLootShare = Config.Bind("Loot", "CursedLuggageMinecraftShare", .35f, new ConfigDescription("Minecraft food share per cursed luggage slot. Host setting; restart for changes.", new AcceptableValueRange<float>(0f,.8f)));
-            ClownLootShare = Config.Bind("Loot", "ClownLuggageMinecraftShare", .30f, new ConfigDescription("Minecraft food share per clown luggage slot. Host setting; restart for changes.", new AcceptableValueRange<float>(0f,.8f)));
-            AirportEffects = Config.Bind("Effects", "AllowFoodEffectsInAirport", true, "Allow only this mod's food effects in the airport, for testing. Does not unlock environmental damage.");
-            AppleAftereffects = Config.Bind("Effects", "GoldenAppleAftereffects", true, "Golden/enchanted apple: hold PEAK Drowsy at maximum for 6/12 seconds after invulnerability ends (no forced loss of control).");
-            GripTemplate = Config.Bind("Visuals", "GripTemplate", "TrailMix", "TrailMix (recommended) or SmallEgg. Restart after changing.");
-            ShowInfo = Config.Bind("UI", "ShowFoodInformation", true, "Show names, nutrition, effects and cooking thresholds; independent of other personal mods.");
+            ModSettings.Open(Root,Config.ConfigFilePath);
+            var shareRange=new AcceptableValueRange<float>(0f,1f);
+            LootShare = ModSettings.Bind("Loot","MinecraftShare",.25f,"普通箱本模组食物占比：0 禁用，0.25=25%，1=仅本模组食品。不是每箱必出概率；仅房主影响后续生成。","Ordinary chest mod-food share: 0=off, 0.25=25%, 1=mod foods only. Not a per-chest guarantee. Host controls future generation.","通常の箱の食品比率：0=無効、0.25=25%、1=MOD食品のみ。箱ごとの保証ではなく、ホストが今後の生成に適用。",shareRange);
+            CursedLootShare = ModSettings.Bind("Loot","CursedLuggageMinecraftShare",.35f,"诅咒箱占比，0~1；0.35=35%。仅房主影响后续生成。","Cursed chest share, 0..1; 0.35=35%. Host affects future generation.","呪いの箱の比率、0～1。0.35=35%。ホストが今後の生成に適用。",shareRange);
+            ClownLootShare = ModSettings.Bind("Loot","ClownLuggageMinecraftShare",.30f,"小丑箱占比，0~1；0.30=30%。仅房主影响后续生成。","Clown chest share, 0..1; 0.30=30%. Host affects future generation.","ピエロの箱の比率、0～1。0.30=30%。ホストが今後の生成に適用。",shareRange);
+            AirportEffects = ModSettings.Bind("Effects","AllowFoodEffectsInAirport",true,"在机场启用本模组食品状态效果，方便测试。","Allow this mod's food status effects in the airport for testing.","テスト用に空港内でも本MODの食品効果を有効化。");
+            AppleAftereffects = ModSettings.Bind("Effects","GoldenAppleAftereffects",true,"金苹果无敌后睡意在6秒内逐渐升满，附魔为12秒；实际入睡后再维持6／12秒。关闭取消待触发或进行中的后遗症。","After invincibility, drowsiness rises to maximum over 6s / 12s, then sleep lasts 6s / 12s from actual unconsciousness. Disabling cancels pending/active ramps.","無敵終了後、6秒／12秒かけて眠気が最大まで上昇し、入眠後6秒／12秒維持。無効化で保留中・進行中の反動を中止。");
+            GripTemplate = ModSettings.Bind("Visuals","GripTemplate","TrailMix","握持模板：TrailMix 混合坚果，SmallEgg 小煎蛋；修改后需重启游戏。","Grip: TrailMix or SmallEgg. Restart the game after changing.","持ち方：TrailMix または SmallEgg。変更後は再起動。",new AcceptableValueList<string>("TrailMix","SmallEgg"));
+            ShowInfo = ModSettings.Bind("UI","ShowFoodInformation",true,"显示手持食品效果、重量和烹饪增量。","Show held-food effects, weight and next-cook deltas.","手持ち食品の効果・重量・次回調理の変化を表示。");
+            DetailedInfo = ModSettings.Bind("UI","DetailedFoodInformation",false,"额外显示烧焦和烧毁次数。随机效果列表始终显示。","Also show charring/destruction thresholds. Random effect lists are always shown.","焦げ・燃え尽きの回数も表示。ランダム効果の一覧は常に表示。");
+            ShowEffectTimers = ModSettings.Bind("UI","ShowEffectTimers",true,"显示本模组临时效果倒计时及剩余护盾。","Show mod effect timers and remaining shield points.","MOD効果の残り時間と残りシールドを表示。");
+            L10n.Language=L10n.Resolve(ModSettings.Language.Value,LocalizedText.CURRENT_LANGUAGE.ToString());
             try
             {
                 var catalogue = Newtonsoft.Json.JsonConvert.DeserializeObject<Catalogue>(File.ReadAllText(Path.Combine(Root,"catalogue.json")));
@@ -60,12 +67,16 @@ namespace MinecraftFoods
                     Visuals.TextureFor(f.texture);
                     if (f.HasCooked) Visuals.TextureFor(f.cookedTexture);
                 }
+                ModSettings.BindFoods(Foods.Values);
+                ValidateSettings();
+                settingsWindow=gameObject.AddComponent<SettingsWindow>();
                 harmony = new Harmony(Id); harmony.PatchAll();
             }
             catch (Exception e) { failed = true; Log.LogError("Minecraft Foods initialization failed: " + e); if(Environment.GetCommandLineArgs().Contains("--mcfoods-audit"))Application.Quit(2); }
         }
         void Update()
         {
+            RefreshLanguage();
             if (ready || failed) return;
             var db = SingletonAsset<ItemDatabase>.Instance;
             if (db == null || db.itemLookup.Count < 50 || LocalizedText.mainTable == null) return;
@@ -106,6 +117,7 @@ namespace MinecraftFoods
                 go.AddComponent<FoodAudio>();
                 item.itemTags = Item.ItemTags.PackagedFood;
                 item.UIData = new Item.ItemUIData { itemName=f.name, icon=Visuals.IconFor(f.texture), mainInteractPrompt=f.id == "milk_bucket" || f.id == "honey_bottle" ? "饮用" : "吃", secondaryInteractPrompt="喂食", hasSecondInteract=true, hideSecondInteract=false, hideFuel=f.uses==1 };
+                LocalizeItem(item,f);
                 // Unity serializes the marker and native hand transforms into every instance.
                 var marker = go.AddComponent<FoodMarker>(); marker.foodId = f.id;
                 Visuals.Build(item, marker);
@@ -129,7 +141,7 @@ namespace MinecraftFoods
             LootData.PopulateLootData();
             InstallInfoIntegration();
             Log.LogInfo($"REGISTERED {Registered.Count} independent Minecraft foods; template={template.name}; no PeakCustomItemMod dependency.");
-            var diagnostic = new List<string> { "Minecraft Foods 1.25.0", "Grip template: " + template.name, "Config: " + Config.ConfigFilePath };
+            var diagnostic = new List<string> { "Minecraft Foods " + ModVersion.Value, "Grip template: " + template.name, "Config: " + ModSettings.File.ConfigFilePath };
             foreach (var item in Registered)
             {
                 var m=item.GetComponent<FoodMarker>();
@@ -139,15 +151,52 @@ namespace MinecraftFoods
             {
                 double total=pool.Value.Values.Sum(x=>(double)x), mc=Registered.Sum(i=>pool.Value.TryGetValue(i.itemID,out int w)?(double)w:0);
                 diagnostic.Add($"{pool.Key}: Minecraft {mc}/{total} ({(total>0?mc/total:0):P2})");
+                foreach(var tier in Registered.GroupBy(i=>LootPatch.LootTier(i.GetComponent<FoodMarker>().Definition,pool.Key.ToString())))
+                {
+                    double weight=tier.Sum(i=>pool.Value.TryGetValue(i.itemID,out int w)?(double)w:0);
+                    diagnostic.Add($"  {tier.Key}: {weight} ({(mc>0?weight/mc:0):P2} within Minecraft foods)");
+                }
             }
             File.WriteAllLines(Path.Combine(Paths.BepInExRootPath,"MinecraftFoods-diagnostics.txt"),diagnostic);
+        }
+        private void ValidateSettings()
+        {
+            foreach(var pair in ModSettings.File)
+                if(pair.Value.BoxedValue is float value && (float.IsNaN(value) || float.IsInfinity(value)))
+                {pair.Value.BoxedValue=pair.Value.DefaultValue;Log.LogWarning("Reset non-finite setting: "+pair.Key);}
+        }
+        internal void ApplySettings()
+        {
+            ValidateSettings();RefreshLanguage();
+            if(ready && SettingsWindow.Host)
+            {
+                LootData.PopulateLootData();
+                Log.LogInfo("Loot settings rebuilt for future generation. Existing contents are unchanged.");
+            }
+        }
+        internal static void LocalizeItem(Item item,FoodDefinition f)
+        {
+            item.UIData.itemName=L10n.FoodName(f.id,f.name);
+            item.UIData.mainInteractPrompt=f.id=="milk_bucket" || f.id=="honey_bottle"?L10n.T("饮用","Drink","飲む"):L10n.T("吃","Eat","食べる");
+            item.UIData.secondaryInteractPrompt=L10n.T("喂食","Feed","食べさせる");
+        }
+        private void RefreshLanguage()
+        {
+            if(ModSettings.Language==null)return;
+            string language=L10n.Resolve(ModSettings.Language.Value,LocalizedText.CURRENT_LANGUAGE.ToString());
+            if(language==L10n.Language)return;
+            L10n.Language=language;
+            foreach(var item in Registered)LocalizeItem(item,item.GetComponent<FoodMarker>().Definition);
+            foreach(var marker in Object.FindObjectsByType<FoodMarker>(FindObjectsSortMode.None))if(marker.Definition!=null)LocalizeItem(marker.GetComponent<Item>(),marker.Definition);
+            foreach(var ui in Object.FindObjectsByType<InventoryItemUI>(FindObjectsSortMode.None))ui.UpdateNameText();
         }
         static Rarity RarityFor(string rarity) => rarity == "epic" ? Rarity.Mythic : rarity == "rare" ? Rarity.Rare : rarity == "uncommon" ? Rarity.Uncommon : Rarity.Common;
         void InstallInfoIntegration()
         {
             var type=AccessTools.TypeByName("ItemInfoDisplay.Plugin");
             var method=type==null?null:AccessTools.Method(type,"ProcessItemGameObject",new[]{typeof(Item)});
-            if(method==null) return;
+            var field=type==null?null:AccessTools.Field(type,"itemInfoDisplayTextMesh");
+            if(method==null || field==null || !field.IsStatic || AccessTools.Property(field.FieldType,"text")?.CanWrite!=true) return;
             harmony.Patch(method,prefix:new HarmonyMethod(typeof(Plugin),nameof(AfterExternalInfo)));
             externalInfo=true;
         }
@@ -156,7 +205,8 @@ namespace MinecraftFoods
             var marker=__0?__0.GetComponent<FoodMarker>():null;
             if(!marker || !ShowInfo.Value) return true;
             var field=AccessTools.Field(AccessTools.TypeByName("ItemInfoDisplay.Plugin"),"itemInfoDisplayTextMesh");
-            var text=field?.GetValue(null); if(text==null)return true;
+            var text=field?.GetValue(null); if(text==null){Instance.externalInfo=false;return true;}
+            Instance.externalInfo=true;
             AccessTools.Property(text.GetType(),"text")?.SetValue(text,Describe(marker));
             return false;
         }
@@ -167,15 +217,33 @@ namespace MinecraftFoods
 
         void OnGUI()
         {
-            if(!ready || !ShowInfo.Value || externalInfo)return;
+            if(!ready)return;
+            if(settingsWindow && settingsWindow.isOpen)return;
             var c=Character.localCharacter; var m=c && c.data.currentItem ? c.data.currentItem.GetComponent<FoodMarker>():null;
-            if(!m)return;
-            if(infoStyle==null) infoStyle=new GUIStyle(GUI.skin.label) { richText=true, wordWrap=true, font=Font.CreateDynamicFontFromOSFont("Microsoft YaHei",18), normal={textColor=new Color(1,.96f,.8f)} };
+            if(!c || c.data.dead)return;
+            if(infoStyle==null) infoStyle=new GUIStyle(GUI.skin.label) { richText=true, wordWrap=true, font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","Yu Gothic UI","Arial"},18), normal={textColor=new Color(1,.96f,.8f)} };
             infoStyle.fontSize=Mathf.Clamp(Mathf.RoundToInt(Screen.height/65f),12,25);
+            if(ShowEffectTimers.Value)
+            {
+                var state=c.GetComponent<FoodPlayerState>();string timers=state?state.CountdownText():"";
+                if(timers.Length>0)
+                {
+                    float w=Screen.width*.29f,h=infoStyle.CalcHeight(new GUIContent(timers),w);
+                    GUI.Label(new Rect(Screen.width*.025f,Screen.height*.16f,w,h),timers,infoStyle);
+                }
+            }
+            if(!m || !ShowInfo.Value || externalInfo)return;
             string description=Describe(m);
-            float width=Screen.width*.31f;
-            float height=infoStyle.CalcHeight(new GUIContent(description),width);
-            GUI.Label(new Rect(Screen.width*.67f,Mathf.Max(20,Screen.height*.80f-height),width,height),description,infoStyle);
+            float width=Screen.width*.25f;
+            float height=infoStyle.CalcHeight(new GUIContent(description),width-24);
+            float visible=Mathf.Min(height,Screen.height*.52f);
+            var rect=new Rect(Screen.width*.64f,Mathf.Max(20,Screen.height*.78f-visible),width,visible);
+            if(height>visible)
+            {
+                infoScroll=GUI.BeginScrollView(rect,infoScroll,new Rect(0,0,width-24,height));
+                GUI.Label(new Rect(0,0,width-24,height),description,infoStyle);GUI.EndScrollView();
+            }
+            else{infoScroll=Vector2.zero;GUI.Label(rect,description,infoStyle);}
         }
     }
 }

@@ -3,7 +3,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AssemblyName>MinecraftFoods</AssemblyName>
-    <Version>1.25.2</Version>
+    <Version>$([System.Text.RegularExpressions.Regex]::Match($([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)/../manifest.json')), '&quot;version_number&quot;\s*:\s*&quot;([^&quot;]+)&quot;').Groups[1].Value)</Version>
     <GameDir Condition="'$(GameDir)' == ''">E:\SteamLibrary\steamapps\common\PEAK</GameDir>
   </PropertyGroup>
   <ItemGroup>
@@ -11,5 +11,10 @@
     <Reference Include="$(GameDir)\BepInEx\core\BepInEx.dll;$(GameDir)\BepInEx\core\0Harmony.dll"><Private>false</Private></Reference>
     <Reference Include="$(GameDir)\BepInEx\plugins\com.github.PEAKModding.PEAKLib.Core.dll;$(GameDir)\BepInEx\plugins\com.github.PEAKModding.PEAKLib.Items.dll"><Private>false</Private></Reference>
   </ItemGroup>
+  <Target Name="GenerateModVersion" BeforeTargets="CoreCompile">
+    <Error Condition="'$(Version)' == ''" Text="manifest.json must contain version_number." />
+    <WriteLinesToFile File="$(IntermediateOutputPath)ModVersion.g.cs" Lines="namespace MinecraftFoods { internal static class ModVersion { public const string Value = &quot;$(Version)&quot;%3B } }" Overwrite="true" WriteOnlyWhenDifferent="true" />
+    <ItemGroup><Compile Include="$(IntermediateOutputPath)ModVersion.g.cs" /></ItemGroup>
+  </Target>
 </Project>
 

@@ -31,7 +31,10 @@ namespace MinecraftFoods
                     Check(Visuals.MeshFor(f.TextureAt(stage)).vertexCount>0,f.id+" mesh");
                     Check(Visuals.TextureFor(f.TextureAt(stage)).filterMode==FilterMode.Point,f.id+" sharp texture");
                     Check(stage<f.wreck || f.HungerAt(stage)==0,f.id+" wreck nutrition");
-                    if(f.HasCooked && stage==1)Check(f.NameAt(stage)==f.cookedName,f.id+" cooked name");
+                    Check(stage<f.wreck || !f.EffectsAt(stage).AllEffects.Any(),f.id+" wreck effects disabled");
+                    foreach(var effect in f.EffectsAt(stage).AllEffects)
+                        Check(!string.IsNullOrEmpty(effect.Describe()),f.id+" effect description");
+                    if(f.HasCooked && stage==1)Check(f.NameAt(stage)==L10n.FoodName(f.cookedTexture,f.cookedName),f.id+" cooked name");
                 }
                 var clone=UnityEngine.Object.Instantiate(item.gameObject);
                 clone.SetActive(false);
@@ -48,15 +51,26 @@ namespace MinecraftFoods
                 lines.Add("PASS "+f.id+" stages 0..12, hand anchors, mesh, texture, network registration, native burn-disable");
             }
             LootData.PopulateLootData();
+            var snapshot=LootData.AllSpawnWeightData.ToDictionary(p=>p.Key,p=>p.Value.ToDictionary(x=>x.Key,x=>x.Value));
+            LootData.PopulateLootData();
+            Check(snapshot.Count==LootData.AllSpawnWeightData.Count,"repeat initialization pool count");
+            foreach(var pool in snapshot)
+                Check(LootData.AllSpawnWeightData.TryGetValue(pool.Key,out var again) && again.Count==pool.Value.Count && pool.Value.All(x=>again.TryGetValue(x.Key,out int weight) && weight==x.Value),pool.Key+" repeat initialization stable");
             foreach(var pool in LootData.AllSpawnWeightData.Where(x=>x.Key.ToString().StartsWith("Luggage")))
             {
                 double total=pool.Value.Values.Sum(x=>(double)x), mc=Plugin.Registered.Sum(x=>pool.Value.TryGetValue(x.itemID,out int w)?(double)w:0);
                 string poolName=pool.Key.ToString();
                 double expected=poolName=="LuggageCursed" ? Plugin.CursedLootShare.Value :
                     poolName=="LuggageClown" ? Plugin.ClownLootShare.Value : Plugin.LootShare.Value;
-                Check(Math.Abs(mc/total-expected)<.002,pool.Key+" loot fraction");
+                string configPool=ModSettings.Pool(poolName);
+                var choices=Plugin.Registered.Select(i=>i.GetComponent<FoodMarker>().Definition)
+                    .Select(f=>new LootChoice(f.id,LootPatch.LootTier(f,poolName),f.weight*ModSettings.Weight(configPool,f.id)));
+                if(LootWeights.Normalize(choices,ModSettings.TierWeights(configPool)).Count==0)expected=0;
+                Check(total>0 && Math.Abs(mc/total-expected)<.002,pool.Key+" loot fraction");
                 lines.Add($"PASS {pool.Key}: {mc/total:P4} Minecraft share");
             }
+            foreach(var pool in LootData.AllSpawnWeightData.Where(x=>!x.Key.ToString().StartsWith("Luggage")))
+                Check(Plugin.Registered.All(x=>!pool.Value.ContainsKey(x.itemID)),pool.Key+" no Minecraft items outside luggage");
             lines.Add($"PASS {checks} runtime assertions. No player/world gameplay was exercised.");
             File.WriteAllLines(Path.Combine(BepInEx.Paths.BepInExRootPath,"MinecraftFoods-audit.txt"),lines);
             Plugin.Log.LogInfo(lines.Last());

@@ -14,16 +14,17 @@ namespace MinecraftFoods
         public bool Cooked(int stage) => HasCooked && stage >= 1;
         public string NameAt(int stage)
         {
-            string n = Cooked(stage) ? cookedName : name;
-            if (stage >= wreck) return n + "（烧毁，不能食用）";
-            if (stage >= scorch) return n + "（烧焦）";
-            return stage > 0 && !HasCooked ? n + "（加热" + stage + "次）" : n;
+            string n = L10n.FoodName(Cooked(stage) ? cookedTexture : id, Cooked(stage) ? cookedName : name);
+            if (stage >= wreck) return n + L10n.T("（烧毁，不能食用）", " (Burnt, inedible)", "（燃え尽き・食べられない）");
+            if (stage >= scorch) return n + L10n.T("（烧焦）", " (Charred)", "（焦げ）");
+            return stage > 0 && !HasCooked ? n + L10n.T("（加热" + stage + "次）", " (Heated " + stage + "x)", "（加熱 " + stage + " 回）") : n;
         }
         public string TextureAt(int stage) => Cooked(stage) ? cookedTexture : texture;
-        public float NutritionFactor(int stage) => stage >= wreck ? 0 : stage < scorch ? 1 : Mathf.Max(.1f, 1f - .3f * (stage - scorch + 1));
+        public float NutritionFactor(int stage) => stage >= wreck ? 0 : stage < scorch ? 1 : Mathf.Max(.1f, 1f - .5f * (stage - scorch + 1));
         public float HungerAt(int stage) => (stage >= 1 ? cookedHunger : hunger) * NutritionFactor(stage);
         public float BonusAt(int stage) => (stage >= 1 ? cookedBonusStamina : bonusStamina) * NutritionFactor(stage);
         public float BurnPoisonAt(int stage) => stage < scorch || stage >= wreck ? 0 : Mathf.Min(.6f, burnPoison * (stage - scorch + 1));
+        internal FoodEffectPlan EffectsAt(int stage) => FoodEffectCatalog.Create(id,stage,scorch,wreck,BurnPoisonAt(stage),Plugin.AppleAftereffects.Value);
         public Color TintAt(int stage)
         {
             if (stage >= wreck) return new Color(.08f, .065f, .055f, 1);

@@ -2,98 +2,103 @@
 
 # Minecraft Foods
 
-**把熟悉的 Minecraft 食物装进背包，和朋友一起攀登 PEAK。**
+**Bring familiar Minecraft food on your next PEAK expedition.**
 
-从不同的行李箱里找到苹果、面包和肉类，在营火旁烤一份牛排，或把金苹果留到危险的攀登路段。Minecraft Foods 为 PEAK 加入 **34 种食物**，带来像素风外观、Minecraft 进食音效、独立烹饪规则和各有用途的特殊效果。
+Find apples, bread, meat and rare treats in luggage. Cook your dinner over a campfire, share it with a teammate, or save a golden apple for a difficult climb. Minecraft Foods adds **34 foods** with pixel-style models, eating sounds, individual cooking rules and special effects designed around PEAK's hunger and extra stamina.
 
-食物直接使用 PEAK 的饥饿回复与额外体力数值。同类食品的基础回复经过加强，物品说明会告诉你吃下去能获得什么，以及下一次烹饪会发生什么。
+*The banner is promotional artwork. Item icons below are included with the mod.*
 
-*顶部为宣传插画；下方为随模组提供的物品图标。*
+## Find food in luggage
 
----
+Ordinary, cursed and clown luggage have separate loot settings. Respawn coffins do not receive Minecraft food.
 
-## 在攀登途中找到它们
-
-- **不同箱子有不同食物池**：普通行李箱、诅咒行李箱和小丑行李箱各自使用独立的食物权重；复活棺材不生成本模组食物。
-- **稀有度决定机会**：日常食材更常见，金苹果和附魔金苹果更难获得。
-- **与朋友分享**：可以拾取、携带、丢给队友，也可以使用喂食交互。
-- Minecraft 食物默认占普通、诅咒、小丑行李箱掉落位置总权重的 **25%／35%／30%**，房主可分别调整；复活棺材为 **0%**。
-
-### 各类箱子的食物分布
-
-下表比例表示**箱子抽中本模组食物后**，食物在各稀有度档中的分布；它不是每个箱子必出食物的概率。单个食物在档内再按其稀有度权重抽取。
-
-| 箱子 | Minecraft 食物掉落权重占比 | 常见 | 少见 | 稀有 | 特殊 |
+| Chest | Default mod-food share | Common | Uncommon | Rare | Special |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 普通行李箱 | 25% | 60% | 25% | 12% | 3% |
-| 诅咒行李箱 | 35% | 35% | 25% | 30% | 10% |
-| 小丑行李箱 | 30% | 45% | 30% | 18% | 7% |
-| 复活棺材 | 0% | — | — | — | — |
+| Ordinary luggage | 25% | 60 | 25 | 12 | 3 |
+| Cursed luggage | 35% | 35 | 25 | 30 | 10 |
+| Clown luggage | 30% | 45 | 30 | 18 | 7 |
+| Respawn coffin | 0% | — | — | — | — |
 
-常见食品包括苹果、面包和肉类；少见食品包括蛋糕、南瓜派和谜之炖菜；稀有食品包括河豚、蜘蛛眼和金胡萝卜；特殊食品包括紫颂果、金苹果和附魔金苹果。诅咒行李箱中腐肉会按少见档分配，提升它在该箱中的出现机会。
+The share is a **weight fraction in the loot pool**, not a guarantee that every chest contains mod food. Tier numbers are relative weights within Minecraft food; the defaults add up to 100. Individual foods are selected by their base weight and configurable multiplier within that tier.
 
-## 熟悉的食物，适合 PEAK 的补给
+Golden apples, enchanted golden apples and chorus fruit belong to the special tier. Rotten flesh moves into the uncommon tier in cursed luggage.
 
-| 日常补给 | 营火料理 | 稀有食物 |
+## Food for the climb
+
+| Everyday supplies | Campfire meals | Special treats |
 | --- | --- | --- |
-| ![苹果](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/apple_icon.png) | ![牛排](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/cooked_beef_icon.png) | ![金苹果](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/golden_apple_icon.png) |
-| 苹果、面包、饼干、胡萝卜和浆果 | 肉类、鱼类、烤马铃薯和各类汤食 | 金苹果、紫颂果和迷之炖菜 |
+| ![Apple](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/apple_icon.png) | ![Steak](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/cooked_beef_icon.png) | ![Golden Apple](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/golden_apple_icon.png) |
+| Apples, bread, cookies and berries | Cooked meat, fish and hearty stews | Golden apples, chorus fruit and suspicious stew |
 
-轻便零食适合途中补充，汤类和大餐适合消耗较大时使用。所有数值直接以 PEAK 的“移除饥饿”和“获得额外体力”显示。
-
-| 食物例子 | 移除饥饿 | 额外体力 |
+| Example food | Hunger removed per use | Extra stamina per use |
 | --- | ---: | ---: |
-| 饼干 | 12 点 | 12 点 |
-| 苹果 | 18 点 | 12 点 |
-| 面包 | 18 点 | 23 点 |
-| 牛排（生牛肉烹饪一次） | 36 点 | 33 点 |
-| 蘑菇煲 | 45 点 | 45 点 |
-| 兔肉煲 | 48 点 | 46 点 |
+| Cookie | 12 | 12 |
+| Apple | 18 | 12 |
+| Bread | 18 | 23 |
+| Steak, after cooking raw beef once | 36 | 33 |
+| Mushroom stew, before heating | 45 | 45 |
+| Rabbit stew, before heating | 48 | 46 |
 
-数值为未烧焦时的单次食用效果；状态和额外体力仍受游戏自身上限限制。
+These are PEAK values. Status caps, immunity and difficulty rules still apply.
 
-## 把生肉烤熟，别把晚餐烧毁
+## Cook in place
 
-- **原槽位变熟**：生肉和生鱼首次烹饪后更换名称与贴图，物品栏图标同步更新，不会为了转换熟食而掉到地上。
-- **首次加热提高回复**：其他食物也能从第一次加热中受益，重复加热不会无限叠加收益。
-- **每种食物耐热程度不同**：继续加热会逐渐变色，超过各自阈值后烧焦、降低回复并增加中毒，最终烧毁。
-- **提前看结果**：拿起食物即可查看当前效果、已烹饪次数和下一次烹饪后的变化。
+- Raw meat and fish change their name, texture and inventory icon after their first cook, without being replaced by a dropped item.
+- The first heating improves nutrition; repeated heating does not increase it forever.
+- All foods follow the same cooking sequence: the first cook improves nutrition; the second cook chars the food, reduces nutrition and adds poison. Charred food retains 50% nutrition on the second cook and 10% from the third cook onwards. Further cooking increases poison up to its cap, until the food reaches its individual destruction threshold and becomes inedible. Naturally harmful foods retain their risks after the first cook. Charring also removes special effects such as golden apple buffs, chorus fruit teleportation and milk cleansing.
+- Tooltips show the **change caused by the next cook**, including lost nutrition or added poison. Unchanged effects are not repeated as a new benefit.
 
-## 特殊食物，有收益也有代价
+## Special food, real consequences
 
-| 金苹果 | 紫颂果 | 河豚 |
-| --- | --- | --- |
-| ![金苹果](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/golden_apple_icon.png) | ![紫颂果](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/chorus_fruit_icon.png) | ![河豚](https://raw.githubusercontent.com/Kaitouhan/Peak-MinecraftFood/main/assets/textures/pufferfish_icon.png) |
-| 在危险路段争取喘息时间 | 随机寻找附近安全落脚点 | 食用会中毒，加热也不会让它安全 |
+- **Golden apple:** 5 seconds of invincibility, 20 injury recovery over 5 seconds, and a 20-point injury shield lasting up to 60 seconds. When invincibility ends, drowsiness gradually rises over 6 seconds. After the native falling-asleep transition, sleep is maintained for 6 seconds measured from actual unconsciousness. The added drowsiness is then removed down to the pre-apple baseline; other statuses can delay waking.
+- **Enchanted golden apple:** 12 seconds of invincibility, 80 injury recovery over 20 seconds, an 80-point shield, 20% injury reduction and protection against heat gain for 60 seconds. Drowsiness rises over 12 seconds, followed by 12 seconds of sleep measured from actual unconsciousness. Milk can interrupt either apple aftereffect.
+- **Chorus fruit:** attempts to find a landing within 30 metres horizontally. Each successful teleport adds either 25 hunger or 15 spores (50% each). If no suitable location is found, you stay where you are and pay no teleport penalty. Successful teleports at most 120 seconds apart accumulate exposure: the fourth starts a 5-second warning, then you die and spawn a hostile PEAK mushroom zombie. Drink milk before the countdown ends to clear exposure; waiting 120 seconds without another success clears exposure before the fourth use. Honey clears spores, but does not clear this exposure counter.
+- **Honey:** clears poison, spores and ongoing food poison. **Milk** clears temporary effects, poison, spores and drowsiness, including buffs, pending golden-apple aftereffects and chorus exposure.
+- **Suspicious stew:** one of eight random outcomes, each shown in the tooltip with its probability.
+- **Pufferfish, rotten flesh, spider eyes and poisonous potatoes:** retain their individual risks. Cooking does not detoxify them. Raw meat and fish can also cause poisoning.
 
-- **金苹果**：获得 5 秒无敌、持续恢复受伤和吸收盾；无敌结束后将 PEAK 睡意值拉满并维持 6 秒。
-- **附魔金苹果**：获得 12 秒无敌、更强恢复和吸收盾，附带短时减伤与炎热防护；无敌结束后将 PEAK 睡意值拉满并维持 12 秒。后遗症比之前版本加倍，使用 PEAK 原生睡意值，不会强制倒地或夺去控制。
-- **紫颂果**：尝试传送到水平 30 米内的安全落脚点，没有合适位置时留在原地。
-- **蜂蜜**：清除中毒与相关持续中毒效果；**牛奶**清除临时效果、中毒和嗜睡，也会移除正面效果。
-- **迷之炖菜**：随机获得一种正面或负面效果。
-- **河豚、腐肉、蜘蛛眼和毒马铃薯**：保留各自风险；烹饪会继续增加毒性。生肉和生鱼也可能带来生食风险。
+Repeated effects refresh their remaining budget and retain the stronger rate instead of adding unlimited stacks. The seven-serving cake is rare to account for its total recovery. Separate sources of poison may coexist. Drowsiness and poison already accumulated do not instantly disappear when a timer ends.
 
-## 听得到，也看得懂
+## Readable effects and language support
 
-食用时播放随包提供的 Minecraft 进食音效，取消或完成时停止。声音通过 SoundAPI 处理，只匹配本模组的进食声音。
+The mod follows your game's language automatically: **Simplified Chinese, English and Japanese** are supported. Traditional Chinese uses the Simplified Chinese translation; other languages fall back to English. You can override this in settings.
 
-物品说明按 PEAK 的表达方式显示回复量、中毒、概率、持续时间、重量和烹饪预览。可搭配 **物品信息显示增强版** 使用；没有它，本模组也能显示说明。
+Food names, eating prompts, effect text, cooking previews, timers and settings are localized. Tooltips use PEAK-style coloured status values, separate effect lines, a list of random outcomes and next-cook changes. Multi-use foods show their remaining uses.
 
----
+Optional on-screen timers show food buffs, shield points, ongoing negative effects and pending drowsiness. Held-food information also works without an extra display mod. **ItemInfoDisplayForkedCNPlus 1.1.3** is optional.
 
-## 安装
+Eating sounds play for the local holder while eating or feeding and stop on completion or cancellation. SoundAPI replacements only target this mod's eating sound. Remote positional eating audio is not included.
 
-推荐使用 **r2modman** 或 **Thunderstore Mod Manager** 安装，清单中的前置依赖由管理器处理。
+## F10 settings
 
-手动安装：
+Press **F10** to open or close the in-game panel. Choose your values and click **Apply & save**. Closing without applying discards the draft. **Reload file** reads manual changes from disk. The panel uses the game's menu input and cursor handling; the multiplayer world keeps running.
 
-1. 安装下方列出的必要前置。
-2. 解压安装包，把其中 `plugins/MinecraftFoods` 整个文件夹复制到 `PEAK/BepInEx/plugins/`。食物与进食音效都在同一个文件夹内。
-3. 启动 PEAK，首次运行会生成 `BepInEx/config/codex.peak.minecraftfoods.cfg`。
+All exposed settings are stored in:
 
-## 前置与兼容性
+`BepInEx/plugins/MinecraftFoods/settings.cfg`
 
-必要前置：
+The file is generated on first launch, with Chinese, English and Japanese comments. Existing settings from `BepInEx/config/codex.peak.minecraftfoods.cfg` are copied on first migration if the new file does not exist. Afterwards, edit the file beside the plugin. The package includes `settings.example.cfg` for reference and does not overwrite your actual configuration.
+
+| Section | What you can change |
+| --- | --- |
+| `UI` | Automatic or fixed language, food information, detailed cooking thresholds and effect timers |
+| `Effects` | Food effects in the airport and golden-apple drowsiness aftereffects |
+| `Visuals` | TrailMix or SmallEgg grip template; requires a game restart |
+| `Loot` | Independent mod-food shares for ordinary, cursed and clown luggage; 0 disables mod food, 1 requests mod food only |
+| `Tiers.Ordinary`, `Tiers.Cursed`, `Tiers.Clown` | Relative common, uncommon, rare and special weights per chest type |
+| `FoodWeights.Ordinary`, `FoodWeights.Cursed`, `FoodWeights.Clown` | A multiplier for each food in each chest type; 1 is default, 0 disables that food |
+
+**The host controls loot.** Loot controls are read-only for clients in another player's room. Changes affect future loot generation, not existing contents. Some contents may already be determined when a level loads, so start a new level or run when testing a new distribution.
+
+A tier weight of 0 disables that tier. Nonempty enabled tiers are normalized. If all mod-food choices in a pool are disabled, the original loot is retained rather than creating an empty pool. Doubling an individual weight does not double its final probability, because all weights compete.
+
+## Installation
+
+Use **r2modman** or **Thunderstore Mod Manager** to install the package and its dependencies.
+
+For manual installation, install the required dependencies, then copy the package's `plugins/MinecraftFoods` folder into `PEAK/BepInEx/plugins/`. Code, textures and sounds are kept in one mod folder. Do not keep duplicate MinecraftFoods DLLs when updating.
+
+Required dependencies:
 
 - [BepInExPack_PEAK 5.4.2403](https://thunderstore.io/c/peak/p/BepInEx/BepInExPack_PEAK/)
 - [PEAKLib Core 1.7.2](https://thunderstore.io/c/peak/p/PEAKModding/PEAKLib_Core/)
@@ -101,52 +106,15 @@
 - [MonoDetour_BepInEx_5 0.6.7](https://thunderstore.io/c/peak/p/MonoDetour/MonoDetour_BepInEx_5/)
 - [loaforcsSoundAPI 2.0.13](https://thunderstore.io/c/peak/p/loaforc/loaforcsSoundAPI/)
 
-可选：**物品信息显示增强版（ItemInfoDisplayForkedCNPlus 1.1.3）**，已按该版本显示接口适配，不是启动前置。
+Host and clients should use the same mod version and dependencies. Minecraft Foods is independent of the author's other custom-item mods.
 
-- 房主与加入者应安装相同版本及依赖。
-- 模组独立运行，不依赖作者其他自定义物品模组。
-- 更新时覆盖旧版同名文件夹，不要同时保留多份 Minecraft Foods 插件 DLL。
-- 本模组食品的内置说明目前为简体中文。
+## Feedback and source
 
-## 常见问题
+Report issues on [GitHub Issues](https://github.com/Kaitouhan/Peak-MinecraftFood/issues), including your game and mod versions, language, reproduction steps and relevant `BepInEx/LogOutput.log` entries. Changes are recorded in `CHANGELOG.md`.
 
-**需要 Minecraft 专属箱子吗？**
+## Credits
 
-不需要专属箱子。普通、诅咒和小丑行李箱都有各自的掉落分布；复活棺材不会生成本模组食物。掉落按物品池权重随机抽取，并非每个箱子都有。
-
-**可以修改掉落概率吗？**
-
-可以在房主配置文件的 `[Loot]` 区域分别调整 `MinecraftShare`（普通箱子，默认 `0.25`）、`CursedLuggageMinecraftShare`（诅咒箱，默认 `0.35`）和 `ClownLuggageMinecraftShare`（小丑箱，默认 `0.30`）。修改后重启生效。
-
-**河豚能烤熟解毒吗？**
-
-不能。有毒食物保留风险，过度烹饪会更危险。
-
-**为什么吃金苹果后会倒地？**
-
-这是无敌结束后的代价。可以通过 `Effects.GoldenAppleAftereffects` 配置关闭。
-
-**怎样反馈问题？**
-
-到 [GitHub Issues](https://github.com/Kaitouhan/Peak-MinecraftFood/issues) 提交问题，附上游戏版本、模组版本、复现步骤和相关 `BepInEx/LogOutput.log` 日志。
-
-## 1.25.0 更新
-
-- 对照同类原版食物加强基础回复，首次加热也有收益。
-- 改用 PEAK 单位展示食物效果和下一次烹饪结果。
-- 调整进食音效播放时机，并适配 SoundAPI 2.0.13。
-- 金苹果无敌结束后分别倒地失控 3 秒／6 秒。
-
-本版已完成编译、数值和打包检查；新版的实际听感、显示排版及多人表现仍需游戏内验证。
-
-## 致谢
-
-- PEAK：Aggro Crab 与 Landfall。
-- Minecraft 及相关原版资源：Mojang Studios / Microsoft。
-- 声音支持：loaforc — loaforcsSoundAPI；物品注册支持：PEAKLib。
-- 本项目是非官方社区模组，与上述游戏开发商无隶属关系。源码许可不改变第三方素材的权利归属。
-
-## 链接
-
-- [GitHub 源码](https://github.com/Kaitouhan/Peak-MinecraftFood)
-- [问题反馈与建议](https://github.com/Kaitouhan/Peak-MinecraftFood/issues)
+- PEAK: Aggro Crab and Landfall.
+- Minecraft and original game resources: Mojang Studios / Microsoft.
+- Sound support: loaforc — loaforcsSoundAPI. Item registration: PEAKLib.
+- This is an unofficial community mod with no affiliation to the game developers. The source-code license does not change ownership of third-party assets.
